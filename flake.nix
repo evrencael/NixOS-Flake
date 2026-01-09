@@ -10,6 +10,7 @@
     };
 
     alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
+    catppuccin.url = "github:catppuccin/nix?ref=v25.05";
   };
 
   outputs = {...}@inputs: {

@@ -3,7 +3,8 @@
   programs.tofi.settings = {
     font = "Fira Code";
     anchor = "center";
-    background-color = "#00000099";
+    background-color = "#1e1e2e99"; # matches catppuccin mocha
+
     border-width = 0;
     outline-width = 0;
     prompt-text = "Open: ";

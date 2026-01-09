@@ -25,13 +25,13 @@
       separate-outputs = true;
       rewrite = {
         "" = "󱄅";
-        "(.*) — Mozilla Firefox" = "󰈹  $1";                # firefox
-        "^• Discord \\| #(.+?) \\| (.+)$" = "  $1 - $2";  # secondary discord
-        "^• Discord \\| (.*)$" = "  $1";                  # discord
-        "Spotify Premium" = "󰓇  Spotify";                  # spotify
-        "(.*) - Visual Studio Code$" = "󰨞  $1";            # vs code
-        "^(.+)@(.+): (.*)$" = "  $1@$2: $3";              # terminal windows
-        "^(?!.*(󰨞|󰈹||))(.+?) - (.+)$" = "󰓇  $2 - $3";    # add 󰓇 to songs
+        "(.*) — Mozilla Firefox" = "󰈹  $1";                    # firefox
+        "^[•]? ?Discord \\| #(.+?) \\| (.+)$" = "  $1 - $2";  # secondary discord
+        "^[•]? ?Discord \\| (.*)$" = "  $1";                  # discord
+        "Spotify Premium" = "󰓇  Spotify";                      # spotify
+        "(.*) - Visual Studio Code$" = "󰨞  $1";                # vs code
+        "^(.+)@(.+): (.*)$" = "  $1@$2: $3";                  # terminal windows
+        "^(?!.*(󰨞|󰈹||))(.+?) - (.+)$" = "󰓇  $2 - $3";        # add 󰓇 to songs
       };
     };
 

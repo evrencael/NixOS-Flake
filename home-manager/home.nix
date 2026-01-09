@@ -2,6 +2,8 @@
 {
   imports = [
     ./modules
+
+    inputs.catppuccin.homeModules.catppuccin
   ];
 
   home = {
@@ -15,7 +17,6 @@
     mako
 
     firefox
-    vesktop
     cloudflare-warp
     prismlauncher
 
@@ -97,14 +98,17 @@
   #    echo /var/lib/flatpak/exports/share/applications/com.spotify.Client.desktop
   #  ''}";
 
+  # vesktop config
+  programs.vesktop.enable = true;
+
   # alacritty config
   programs.alacritty = {
     enable = true;
     settings = {
       scrolling.multiplier = 5;
       selection.save_to_clipboard = true;
-      general.import = [ pkgs.alacritty-theme.nightfox ];
-      window.opacity = 0.8;
+      #general.import = [ pkgs.alacritty-theme.nightfox ];
+      #window.opacity = 0.8;
     };
   };
 
@@ -115,6 +119,13 @@
       source /home/evren/flake/aliases.sh
     '';
   };
+
+
+  # config for catppuccin
+  catppuccin.flavor = "mocha";
+  catppuccin.enable = true;
+  catppuccin.delta.enable = false;
+
 
   home.stateVersion = "25.05";
 
