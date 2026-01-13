@@ -3,7 +3,7 @@
   programs.tofi.settings = {
     font = "Fira Code";
     anchor = "center";
-    background-color = "#1e1e2e99"; # matches catppuccin mocha
+    background-color = "#1e1e2e99"; # Overrides catppuccin for opacity
 
     border-width = 0;
     outline-width = 0;

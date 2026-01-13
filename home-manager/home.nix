@@ -122,10 +122,20 @@
 
 
   # config for catppuccin
-  catppuccin.flavor = "mocha";
-  catppuccin.enable = true;
-  catppuccin.delta.enable = false;
+  catppuccin = {
+    flavor = "mocha";
 
+    # manually enable all apps
+    alacritty.enable = true;
+    waybar.enable = false;
+    vesktop.enable = true;
+    btop.enable = true;
+    firefox.enable = true;
+    hyprland.enable = true;
+    mako.enable = true;
+
+    tofi.enable = false; # disabled for opacity override
+  };
 
   home.stateVersion = "25.05";
 
