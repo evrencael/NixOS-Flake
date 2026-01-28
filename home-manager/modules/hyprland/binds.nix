@@ -38,9 +38,7 @@
       "$mainMod+SHIFT, 0, movetoworkspace, 10"
 
       # media control
-      "SHIFT, F6, exec, playerctl -p spotify previous"
-      "SHIFT, F7, exec, playerctl -p spotify play-pause"
-      "SHIFT, F8, exec, playerctl -p spotify next"
+      "SHIFT, F1, exec, spotify-focus-toggle"
 
       # screenshot
       ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
@@ -52,14 +50,13 @@
       ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5%-"
       ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
 
-      ", F1, exec, spotify-focus-toggle"
-      ", F2, exec, playerctl -p spotify volume 0.05-"
-      ", F3, exec, playerctl -p spotify volume 0.05+"
-      ", F4, exec, spotify-mute-toggle"
+      "SHIFT, F2, exec, playerctl -p spotify volume 0.05-"
+      "SHIFT, F3, exec, playerctl -p spotify volume 0.05+"
+      "SHIFT, F4, exec, spotify-mute-toggle"
 
-      ", F6, exec, playerctl -p spotify previous"
-      ", F7, exec, playerctl -p spotify play-pause"
-      ", F8, exec, playerctl -p spotify next"
+      "SHIFT, F6, exec, playerctl -p spotify previous"
+      "SHIFT, F7, exec, playerctl -p spotify play-pause"
+      "SHIFT, F8, exec, playerctl -p spotify next"
     ];
 
 

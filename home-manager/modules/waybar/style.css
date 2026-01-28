@@ -1,39 +1,88 @@
+/*
+Style sheet for Waybar using Catppuccin Mocha theme
+*/
+
+@import "/nix/store/0kccl3j0hcx903y2qfz4br74xk943b2y-catppuccin-waybar-0-unstable-2024-07-13/mocha.css";
+/* code /nix/store/0kccl3j0hcx903y2qfz4br74xk943b2y-catppuccin-waybar-0-unstable-2024-07-13/mocha.css */
+
+
+/* === General Styling  === */
+
+* {
+    font-family: "Fira Code Nerd Font";
+    font-size: 14px;
+    min-height: 0;
+
+    /* Remove default hover effects [ Mine are better :) ] */
+    text-shadow: none;
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
 window#waybar {
     background: transparent;
-    font-family: "GeistMono Nerd Font";
+    color: @text;
 }
 
-#workspaces {
-    padding: 0;
+
+/* === General Module Styling  === */
+
+#cpu,
+#memory,
+#disk,
+#wireplumber,
+#battery,
+#clock,
+#privacy,
+#custom-lock,
+#window,
+#custom-warp,
+#mpris {
+    background: @surface0;
+    color: @text;
+    border-radius: 8px;
+    margin: 4px;
+    padding: 0 12px;
 }
 
-#workspaces button {
-    color: #d9c4b8;
-    border-radius: 20px;
+
+/* === Warp Styling === */
+
+#custom-warp.on {
+    background: @mauve;
+    color: @base;
+}
+#custom-warp.off {
+    background: @surface0;
+    color: @text;
 }
 
-#workspaces button:hover {
-    color: black;
-    background-color: white;
+
+/* === Button Styling  === */
+
+#workspaces button,
+#taskbar button {
+    background: @surface0;
+    color: @text;
+    border-radius: 8px;
+    margin: 4px;
+    padding: 0 8px;
+    transition: all 0.5s ease-in-out;
 }
 
-#workspaces button.active {
-    font-weight: 900;
+#workspaces button:hover,
+#taskbar button:hover {
+    box-shadow: -1.5px -1.5px 0 @mauve, 1.5px -1.5px 0 @mauve, -1.5px 1.5px 0 @mauve, 1.5px 1.5px 0 @mauve, 0 -4px 0 @mauve;
 }
 
-.module,
-#privacy {
-    background-color: #1d253d;
-    border: 1px solid black;
-    border-radius: 20px;
-    color: #d9c4b8;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding-left: 12px;
-    padding-right: 12px;
+#workspaces button.active,
+#taskbar button.active {
+    background: @mauve;
+    color: @base;
 }
 
-#taskbar {
-    background-color: transparent;
-    border: 0;
+#workspaces button.active:hover,
+#taskbar button.active:hover {
+    box-shadow: inset 0 -4px @surface0;
 }

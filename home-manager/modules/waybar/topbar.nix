@@ -1,15 +1,5 @@
 {
   programs.waybar.settings.topbar = {
-    modules-right = [
-      "privacy"
-      "custom/lock"
-      "wireplumber"
-      "battery"
-      "clock"
-    ];
-
-    modules-center = [ "hyprland/window" ];
-
     modules-left = [
       "hyprland/workspaces"
       "memory"
@@ -17,7 +7,19 @@
       "disk"
     ];
 
-    height = 36;
+    modules-center = [ "hyprland/window" ];
+
+    modules-right = [
+      "privacy"
+      "upower"
+      "custom/warp"
+      "custom/lock"
+      "wireplumber"
+      "battery"
+      "clock"
+    ];
+
+    height = 38;
     margin = "5 5 0 5";
 
     "hyprland/window" = {
@@ -25,13 +27,13 @@
       separate-outputs = true;
       rewrite = {
         "" = "󱄅";
-        "(.*) — Mozilla Firefox" = "󰈹  $1";                    # firefox
-        "^[•]? ?Discord \\| #(.+?) \\| (.+)$" = "  $1 - $2";  # secondary discord
-        "^[•]? ?Discord \\| (.*)$" = "  $1";                  # discord
-        "Spotify Premium" = "󰓇  Spotify";                      # spotify
-        "(.*) - Visual Studio Code$" = "󰨞  $1";                # vs code
-        "^(.+)@(.+): (.*)$" = "  $1@$2: $3";                  # terminal windows
-        "^(?!.*(󰨞|󰈹||))(.+?) - (.+)$" = "󰓇  $2 - $3";        # add 󰓇 to songs
+        "(.*) — Mozilla Firefox" = "󰈹 $1";                     # firefox
+        "^[•]? ?Discord \\| #(.+?) \\| (.+)$" = " $1 - $2";   # secondary discord
+        "^[•]? ?Discord \\| (.*)$" = " $1";                   # discord
+        "Spotify Premium" = "󰓇 Spotify";                       # spotify
+        "(.*) - Visual Studio Code$" = "󰨞 $1";                 # vs code
+        "^(.+)@(.+): (.*)$" = " $1@$2: $3";                   # terminal windows
+        "^(?!.*(󰨞|󰈹||))(.+?) - (.+)$" = "󰓇 $2 - $3";         # add 󰓇 to songs
       };
     };
 
@@ -46,12 +48,12 @@
       format = "  {percentage}%";
     };
     "disk" = {
-      format = "󰋊  {percentage_used}%";
+      format = "󰋊 {percentage_used}%";
     };
 
     "wireplumber" = {
       format = "  {volume}%";
-      format-muted = "󰖁 {volume}%";
+      format-muted = " {volume}%";
       on-click = "pavucontrol";
       scroll-step = 2;
     };
@@ -62,6 +64,15 @@
       tooltip = false;
     };
 
+    "custom/warp" = {
+      format = "{}";
+      return-type = "json";
+      exec = "./warp-status.sh";
+      interval = 1;
+      on-click = "./warp-toggle.sh";
+      tooltip = false;
+    };
+
     "upower" = {
       icon-size = 20;
       hide-if-empty = true;
@@ -69,8 +80,8 @@
     };
 
     "clock" = {
-      format = "{:%H:%M:%S %a %d %b}";
-      interval = 1;
+      format = "{:%a %d %b}";
+      interval = 60;
     };
   };
 }

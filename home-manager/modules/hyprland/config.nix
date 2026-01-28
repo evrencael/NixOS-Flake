@@ -15,8 +15,9 @@
       exec-once = [
         "mako"
         "waybar"
-        "code"
-        "flatpak run com.spotify.Client"
+        "hyprctl dispatch exec '[workspace 1 silent] code'"
+        "hyprctl dispatch exec '[workspace 2 silent] firefox'"
+        "hyprctl dispatch exec '[workspace 3 silent] flatpak run com.spotify.Client'"
       ];
 
       env = [
@@ -52,8 +53,8 @@
         # that did not fix it
         shadow.render_power = 1;
 
-        dim_inactive = true;
-        dim_strength = 0.25;
+        dim_inactive = false;
+        #dim_strength = 0.1;
 
         blur = {
           passes = 3;

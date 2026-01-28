@@ -18,7 +18,7 @@ alias cmat='cmatrix -s -b -u 6'
 # Cloudflare WARP
 alias won='warp-cli connect'
 alias woff='warp-cli disconnect'
-alias wstatus='warp-cli status'
+alias wstat='warp-cli status'
 
 
 # nix aliases
@@ -45,7 +45,7 @@ tidy() {
     fi
 }
 
-alias up="nix flake update && rebuild"
+alias up="sudo nix flake update && rebuild"
 alias rb="rebuild"
 
 
