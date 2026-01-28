@@ -35,6 +35,27 @@
           }
         ];
       };
+
+      evbook = inputs.nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+	      modules = [
+	        ./configuration-evbook.nix
+
+          (_: {
+            nixpkgs.overlays = [ inputs.alacritty-theme.overlays.default ];
+          })
+
+          inputs.home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = { inherit inputs; };
+              users.evren = import ./home-manager/home.nix;
+            };
+          }
+        ];
+      };
     };
   };
 }
