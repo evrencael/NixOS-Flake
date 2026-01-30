@@ -55,6 +55,8 @@
     slurp
     wl-clipboard
 
+    brightnessctl
+
     # spotify mute toggle
     (writeShellScriptBin "spotify-mute-toggle" ''
 
