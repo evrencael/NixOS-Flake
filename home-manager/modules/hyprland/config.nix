@@ -9,7 +9,7 @@
     settings = {
       monitor = if hostname == "evbook"
         then ",preferred,auto,1.26" # zoom in on retina display
-        else ",preferred,auto,1";
+        else ",preferred,auto,1.0";
 
       "$mainMod" = "SUPER";
       "$terminal" = "alacritty";

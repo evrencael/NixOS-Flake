@@ -38,6 +38,7 @@ window#waybar {
 #custom-lock,
 #window,
 #custom-warp,
+#custom-brightness,
 #mpris {
     background: @surface0;
     color: @text;
@@ -46,6 +47,30 @@ window#waybar {
     padding: 0 12px;
 }
 
+
+/* === Battery Styling === */
+
+#battery.charging,
+#battery.plugged,
+#battery.full {
+    background: @green;
+    color: @base;
+}
+
+#battery.warning:not(.charging) {
+    background: @yellow;
+    color: @base;
+}
+
+#battery.critical:not(.charging) {
+    background: @red;
+    color: @base;
+    animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0.5; }
+}
 
 /* === Warp Styling === */
 

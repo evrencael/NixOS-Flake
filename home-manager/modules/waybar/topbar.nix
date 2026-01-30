@@ -1,3 +1,7 @@
+{ hostname, ... }:
+let
+  isLaptop = hostname == "EvBook";
+in
 {
   programs.waybar.settings.topbar = {
     modules-left = [
@@ -11,13 +15,15 @@
 
     modules-right = [
       "privacy"
-      "upower"
+    ]
+    ++ (if isLaptop then [ "custom/brightness" ] else [])
+    ++ [
       "custom/warp"
       "custom/lock"
       "wireplumber"
-      "battery"
-      "clock"
-    ];
+    ]
+    ++ (if isLaptop then [ "battery" ] else [])
+    ++ [ "clock" ];
 
     height = 38;
     margin = "5 5 0 5";
