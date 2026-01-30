@@ -1,5 +1,5 @@
 # NixOS Flake
-A somewhat decent Flake for NixOS :)
+My (hopefully not too bad) NixOS Flake :)
 
 ## Usage
 Feel free to use as you wish.
