@@ -29,7 +29,7 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              extraSpecialArgs = { inherit inputs; };
+              extraSpecialArgs = { inherit inputs; hostname = "evren"; };
               users.evren = import ./home-manager/home.nix;
             };
           }
@@ -50,7 +50,7 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              extraSpecialArgs = { inherit inputs; };
+              extraSpecialArgs = { inherit inputs; hostname = "evbook"; };
               users.evren = import ./home-manager/home.nix;
             };
           }

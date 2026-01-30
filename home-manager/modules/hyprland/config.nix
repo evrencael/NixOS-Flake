@@ -1,3 +1,4 @@
+{ hostname, ...}:
 {
   # hyprland config
   wayland.windowManager.hyprland = {
@@ -6,7 +7,9 @@
     xwayland.enable = true;
 
     settings = {
-      monitor = ",preferred,auto,1";
+      monitor = if hostname == "evren"
+        then ",preferred,auto,1.5" # zoom in on retina display
+        else ",preferred,auto,1.0";
 
       "$mainMod" = "SUPER";
       "$terminal" = "alacritty";
@@ -38,7 +41,6 @@
         "col.inactive_border" = "rgba(595959aa)";
 
         resize_on_border = true;
-
         allow_tearing = false;
 
         layout = "dwindle";
@@ -50,7 +52,6 @@
         active_opacity = 1.0;
         inactive_opacity = 1.0;
 
-        # that did not fix it
         shadow.render_power = 1;
 
         dim_inactive = false;
@@ -103,8 +104,8 @@
         new_status = "master";
       };
 
+      # hide wallpaper text
       misc = {
-        # hide wallpaper text
         disable_splash_rendering = true;
         force_default_wallpaper = -1;
       };
