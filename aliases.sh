@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-# shortenings
+# constants
 SPOTIFY_APP="com.spotify.Client"
 
 
-# simple stuff aliases
+# simple aliases
 alias cls="clear" # tehehe
 alias hl="hyprland"
 alias sd="echo 'Shutting down . . .'; sudo shutdown -h now"
@@ -23,13 +23,19 @@ alias wstat='warp-cli status'
 
 # nix aliases
 rebuild() {
-    if sudo nixos-rebuild switch --flake $HOME/flake#evren; then
-        rm -f $HOME/.cache/tofi-drun
-        cls
-        echo "Rebuild successful :)"
-    else
-        echo "Rebuild failed :("
+    if [ -z "$1" ]; then
+        echo "Usage: rebuild [device name]"
         return 1
+    else
+        if sudo nixos-rebuild switch --flake $HOME/flake#$1; then
+            rm -f $HOME/.cache/tofi-drun # get tofi to recognise new apps
+            cls
+            echo "Rebuild successful :)"
+            return 0
+        else
+            echo "Rebuild failed :("
+            return 1
+        fi
     fi
 }
 

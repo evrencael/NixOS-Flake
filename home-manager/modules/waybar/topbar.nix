@@ -67,9 +67,9 @@
     "custom/warp" = {
       format = "{}";
       return-type = "json";
-      exec = "./warp-status.sh";
+      exec = "/home/evren/flake/home-manager/modules/waybar/warp-status.sh";
       interval = 1;
-      on-click = "./warp-toggle.sh";
+      on-click = "/home/evren/flake/home-manager/modules/waybar/warp-toggle.sh";
       tooltip = false;
     };
 
