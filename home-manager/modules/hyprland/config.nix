@@ -7,9 +7,9 @@
     xwayland.enable = true;
 
     settings = {
-      monitor = if hostname == "evren"
-        then ",preferred,auto,1.5" # zoom in on retina display
-        else ",preferred,auto,1.0";
+      monitor = if hostname == "evbook"
+        then ",preferred,auto,1.26" # zoom in on retina display
+        else ",preferred,auto,1";
 
       "$mainMod" = "SUPER";
       "$terminal" = "alacritty";
@@ -108,6 +108,11 @@
       misc = {
         disable_splash_rendering = true;
         force_default_wallpaper = -1;
+      };
+
+      # hide scale error for evbook
+      debug = {
+        suppress_errors = true;
       };
     };
   };

@@ -3,7 +3,6 @@
   pkgs,
   ...
 }:
-
 {
   imports = [
       ./hardware-configuration-evbook.nix
@@ -12,12 +11,12 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelModules = [ "snd-usb-audio" ];
+  boot.loader.systemd-boot.configurationLimit = 3;
+  boot.kernelModules = [ "snd-usb-audio" "snd-hda-intel" ];
 
   networking = {
     hostName = "EvBook"; # Define your hostname.
     networkmanager.enable = true;
-    wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   };
 
   # Configure network proxy if necessary
@@ -85,6 +84,14 @@
     pulse.enable = true;
   };
 
+  # more sound stuff :(
+  security.rtkit.enable = true;
+  hardware.enableAllFirmware = true;
+
+  boot.extraModprobeConfig = ''
+    options snd-hda-intel model=auto probe_mask=1
+  '';
+
   # Disable PulseAudio bc of PipeWire
   services.pulseaudio.enable = false;
 
@@ -135,6 +142,8 @@
     tofi
     powertop
     acpi
+
+    alsa-utils
   ];
 
 
