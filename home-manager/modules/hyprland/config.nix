@@ -7,7 +7,7 @@
     xwayland.enable = true;
 
     settings = {
-      monitor = if hostname == "evbook"
+      monitor = if hostname == "EvBook"
         then ",preferred,auto,1.26" # zoom in on retina display
         else ",preferred,auto,1.0";
 

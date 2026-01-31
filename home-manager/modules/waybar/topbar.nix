@@ -89,16 +89,18 @@ in
         warning = 30;
         critical = 15;
       };
-      format = "{icon}  {capacity}%";
+      format = "{icon} {capacity}%";
       format-charging = "󰂄 {capacity}%";
       format-plugged = "󰚥 {capacity}%";
       format-full = "󰁹 {capacity}%";
       format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
       tooltip-format = "{timeTo}\n{power}W";
-      tooltip-format-charging = "󰂄 {timeTo}\n+{power}W charging";
-      tooltip-format-discharging = "󰁾 {timeTo}\n-{power}W discharging";
+      tooltip-format-charging = "󰂄 {timeTo}\n+{power}W";
+      tooltip-format-discharging = "󰁾 {timeTo}\n-{power}W";
       tooltip-format-full = "󰁹 Fully charged";
       tooltip-format-plugged = "󰚥 Plugged in\n{power}W";
+
+      interval = 5;
     };
 
     "custom/brightness" = {

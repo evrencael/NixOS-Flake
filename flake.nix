@@ -39,7 +39,7 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            extraSpecialArgs = { inherit inputs; hostname; };
+            extraSpecialArgs = { inherit inputs hostname; };
             users.evren = import ./home-manager/home.nix;
           };
         }
