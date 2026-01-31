@@ -39,6 +39,7 @@ let
     "$mainMod+SHIFT, 9, movetoworkspace, 9"
     "$mainMod+SHIFT, 0, movetoworkspace, 10"
   ];
+
   commonBindl = [];
 
 
@@ -52,6 +53,7 @@ let
       ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
       "SHIFT, Print, exec, grim -g \"$(slurp)\" ~/Pictures/$(date +%Y-%m-%d_%H-%M-%S).png"
     ];
+
     EvBook = [
       # screenshot
       "$mainMod+P, exec, grim -g \"$(slurp)\" - | wl-copy"
@@ -75,20 +77,25 @@ let
       "SHIFT, F7, exec, playerctl -p spotify play-pause"
       "SHIFT, F8, exec, playerctl -p spotify next"
     ];
+
     EvBook = [
+      # volume control
       "SHIFT, F12, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
       "SHIFT, F11, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
       "SHIFT, F10, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
 
+      # media control
       "SHIFT, F9, exec, playerctl -p spotify next"
       "SHIFT, F8, exec, playerctl -p spotify play-pause"
       "SHIFT, F7, exec, playerctl -p spotify previous"
 
-      "SHIFT, F6, exec, brightnessctl -d '*::kbd_backlight' set +10%"
-      "SHIFT, F5, exec, brightnessctl -d '*::kbd_backlight' set 10%-"
+      # kb backlight control
+      "SHIFT, F6, exec, brightnessctl -d 'spi::kbd_backlight' set +10%"
+      "SHIFT, F5, exec, brightnessctl -d 'spi::kbd_backlight' set 10%-"
 
-      "SHIFT, F2, exec, brightnessctl set +10%"
-      "SHIFT, F1, exec, brightnessctl set 10%-"
+      # screen brightness control
+      "SHIFT, F2, exec, brightnessctl -d acpi_video0 set +10%"
+      "SHIFT, F1, exec, brightnessctl -d acpi_video0 set 10%-"
     ];
   };
 in
