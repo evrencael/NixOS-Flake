@@ -1,27 +1,93 @@
 #!/usr/bin/env bash
 
-# constants
+# ============================================
+# CONSTANTS
+# ============================================
+
 SPOTIFY_APP="com.spotify.Client"
+HOSTNAMES=("EvTop" "EvBook")
+
+# ============================================
+# AUTOCOMPLETION
+# ============================================
+
+# Possibly useful later
+#_completions() {
+#    local CUR="${COMP_WORDS[COMP_CWORD]}"
+#    COMPREPLY=($(compgen -W "$1" -- "$CUR"))
+#}
+
+complete -W "${HOSTNAMES[*]}" rebuild rb
+complete -W "-a 1d 7d 30d" tidy
+
+# ============================================
+# CLOUDFLARE WARP
+# ============================================
+
+alias won="warp-cli connect"
+alias woff="warp-cli disconnect"
+alias wreg="warp-cli registration new"
+alias wstat="warp-cli status"
+
+# ============================================
+# FLATPAK
+# ============================================
+
+flatpak_reinstall() {
+    flatpak remote-add --if-not-exists flathub \
+        https://flathub.org/repo/flathub.flatpakrepo
+
+    flatpak install flathub $SPOTIFY_APP -y
+}
+
+flatpak_uninstall_all() {
+    flatpak uninstall --all -y
+    flatpak remote-delete flathub
+}
+
+alias flatup="flatpak update -y"
+alias flatre="flatpak_reinstall"
+alias flatun="flatpak_uninstall_all"
+alias spotify="flatpak run $SPOTIFY_APP"
 
 
-# simple aliases
-alias cls="clear" # tehehe
-alias hl="hyprland"
-alias sd="echo 'Shutting down . . .'; sudo shutdown -h now"
-alias rs="echo 'Restarting . . .'; sudo shutdown -r now"
+# ============================================
+# GIT
+# ============================================
 
-alias ll='ls -la --color=auto'
-alias la='ls -A --color=auto'
+gacp() {
+    if [ -z "$1" ]; then
+        echo "Please provide a commit message."; return 1
+    elif [ -z "$2" ]; then
+        echo "Please provide a file to add."; return 1
+    else
+        git add "${@:2}" # allow multiple files
+        git commit -m "$1"
+        git push && git status
+    fi
+}
 
-alias cmat='cmatrix -s -b -u 6'
+gc() {
+    if [ -z "$1" ]; then
+        echo "Please provide a commit message."
+        return 1
+    else
+        git commit -m "$1"
+        git push
+    fi
+}
 
-# Cloudflare WARP
-alias won='warp-cli connect'
-alias woff='warp-cli disconnect'
-alias wstat='warp-cli status'
+alias ga="git add"
+alias gd="git diff"
+alias gpl="git pull"
+alias gps="git push"
+alias grs="git restore --staged ."
+alias gs="git status"
 
+# ============================================
+# NIX
+# ============================================
 
-# nix aliases
 rebuild() {
     if [ -z "$1" ]; then
         echo "Usage: rebuild [device name]"
@@ -31,7 +97,6 @@ rebuild() {
             rm -f $HOME/.cache/tofi-drun # get tofi to recognise new apps
             cls
             echo "Rebuild successful :)"
-            return 0
         else
             echo "Rebuild failed :("
             return 1
@@ -42,83 +107,28 @@ rebuild() {
 tidy() {
     if [ -z "$1" ]; then
         nix-collect-garbage --delete-older-than 7d
-
-    elif [ "$1" == "all" ]; then
+    elif [ "$1" == "-a" ]; then
         nix-collect-garbage --delete-old
     else
         nix-collect-garbage --delete-older-than "$1"
-        return 1
     fi
 }
 
-alias up="sudo nix flake update && rebuild"
+alias up="sudo nix flake update"
 alias rb="rebuild"
 
+# ============================================
+# SYSTEM
+# ============================================
 
-# flatpak
-flatpak_reinstall() {
-    flatpak remote-add --if-not-exists flathub \
-        https://flathub.org/repo/flathub.flatpakrepo
+alias cls="clear" # tehehe
+alias cmat="cmatrix -s -b -u 6"
+alias hl="hyprland"
+alias la="ls -A --color=auto"
+alias ll="ls -la --color=auto"
+alias rs="echo 'Restarting . . .'; sudo shutdown -r now"
+alias sd="echo 'Shutting down . . .'; sudo shutdown -h now"
 
-    # packages, hopefully won't end up with more here
-    flatpak install flathub $SPOTIFY_APP -y
-}
-
-alias flatup="flatpak update -y"
-alias flatre="flatpak_reinstall"
-alias spotify="flatpak run $SPOTIFY_APP"
-
-
-# git
-alias gs='git status'
-alias gpl='git pull'
-alias gps='git push'
-alias grs='git restore --staged .'
-
-gc() {
-    if [ -z "$1" ]; then
-        echo "Please provide a commit message."
-        return 1
-
-    else
-        git commit -m "$1"
-        git push
-    fi
-}
-
-gd() {
-    if [ -z "$1" ]; then
-        git diff
-
-    else
-        git diff "$@"
-
-    fi
-}
-
-ga() {
-    if [ -z "$1" ]; then
-        git add .
-
-    else
-        git add "$@"
-
-    fi
-}
-
-gacp() {
-    if [ -z "$1" ]; then
-        echo "Please provide a commit message."
-        return 1
-
-    elif [ -z "$2" ]; then
-        echo "Please provide a file to add."
-        return 1
-
-    else
-        git add "${@:2}" # allow multiple files
-        git commit -m "$1"
-        git push
-        git status
-    fi
-}
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
