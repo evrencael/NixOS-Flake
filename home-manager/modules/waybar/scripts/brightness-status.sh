@@ -21,6 +21,6 @@ display_pcnt=$(get_brightness acpi_video0)
 kb_pcnt=$(get_brightness 'spi::kbd_backlight')
 
 # Output as JSON for waybar
-text= "\"󰌌 ${kb_pcnt}% | 󰃞 ${display_pcnt}%\""
-tooltip= "\"Keyboard: ${kb_pcnt}%\\nDisplay: ${display_pcnt}%\""
+text="\"󰌌 ${kb_pcnt}% | 󰍹 ${display_pcnt}%\""
+tooltip="\"Keyboard: ${kb_pcnt}%\\nDisplay: ${display_pcnt}%\""
 echo "{\"text\": $text, \"tooltip\": $tooltip}"
