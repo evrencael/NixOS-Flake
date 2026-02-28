@@ -17,6 +17,7 @@ in
       "privacy"
     ]
     ++ (if isLaptop then [ "custom/brightness" ] else [])
+    ++ (if !isLaptop then [ "custom/nosleep" ] else [])
     ++ [
       "custom/warp"
       "custom/lock"
@@ -109,6 +110,15 @@ in
       exec = "/home/evren/flake/home-manager/modules/waybar/scripts/brightness-status.sh";
       interval = 2;
       tooltip = true;
+    };
+
+    "custom/nosleep" = {
+      format = "{}";
+      return-type = "json";
+      exec = "/home/evren/flake/home-manager/modules/waybar/scripts/nosleep-status.sh";
+      interval = 5;
+      on-click = "/home/evren/flake/home-manager/modules/waybar/scripts/nosleep-toggle.sh";
+      tooltip = false;
     };
   };
 }

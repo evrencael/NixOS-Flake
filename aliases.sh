@@ -144,3 +144,5 @@ tidy() {
 
 alias up="sudo nix flake update"
 alias rb="rebuild"
+alias nosleep="pkill hypridle && echo 'Auto-sleep disabled'"
+alias sleep-on="hypridle & echo 'Auto-sleep enabled'"

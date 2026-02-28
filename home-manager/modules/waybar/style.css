@@ -39,6 +39,7 @@ window#waybar {
 #window,
 #custom-warp,
 #custom-brightness,
+#custom-nosleep,
 #mpris {
     background: @surface0;
     color: @text;
@@ -72,13 +73,15 @@ window#waybar {
     50% { opacity: 0.5; }
 }
 
-/* === Warp Styling === */
+/* === On/Off Styling === */
 
-#custom-warp.on {
+#custom-warp.on,
+#custom-nosleep.on {
     background: @mauve;
     color: @base;
 }
-#custom-warp.off {
+#custom-warp.off,
+#custom-nosleep.off {
     background: @surface0;
     color: @text;
 }

@@ -1,4 +1,7 @@
-{ hostname, ... }:
+{
+  hostname,
+  ...
+}:
 {
   # hyprland config
   wayland.windowManager.hyprland = {
@@ -35,6 +38,8 @@
       env = [
         "LIBVA_DRIVER_NAME,nvidia"
         "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+        "XCURSOR_THEME,Bibata-Modern-Classic"
+        "XCURSOR_SIZE,24"
       ];
 
       cursor = {
