@@ -20,17 +20,24 @@
       mkHost =
         {
           hostname,
-          configFile,
+          rootUUID,
+          bootUUID,
+          swapUUID,
           sysType ? "x86_64-linux",
         }:
         inputs.nixpkgs.lib.nixosSystem {
           system = sysType;
 
-          specialArgs = { inherit hostname; };
+          specialArgs = { inherit hostname rootUUID bootUUID swapUUID; };
 
           modules = [
+            # base config for all hosts
+            ./hosts/base/configuration.nix
+            ./hosts/base/hardware-configuration.nix
+
             # device specific config
-            configFile
+            ./hosts/${hostname}/configuration.nix
+            ./hosts/${hostname}/hardware-configuration.nix
 
             # set up alacritty theme
             (_: {
@@ -55,13 +62,17 @@
         # desktop config [ see what i did ;) ]
         EvTop = mkHost {
           hostname = "EvTop";
-          configFile = ./hosts/evtop/configuration.nix;
+          rootUUID = "6578503f-8659-477b-8606-3b731bfee722";
+          bootUUID = "AA06-D565";
+          swapUUID = "a33bb431-ec32-414e-b61a-80badd6b49a2";
         };
 
         # laptop config
         EvBook = mkHost {
           hostname = "EvBook";
-          configFile = ./hosts/evbook/configuration.nix;
+          rootUUID = "f06398c5-3ca4-4043-b351-bca06b399fda";
+          bootUUID = "5F66-17ED";
+          swapUUID = "43fd4f58-63ba-49f9-94a7-93542e8dbab7";
         };
       };
     };

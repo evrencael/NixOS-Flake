@@ -1,7 +1,8 @@
-# Base config file, expanded by congifuration-evtop.nix etc.
+# Base configuration
 {
   config,
   pkgs,
+  hostname,
   ...
 }:
 {
@@ -9,16 +10,27 @@
   # BOOTLOADER
   # ============================================
   boot.loader = {
-        systemd-boot.enable = true;
-        efi.canTouchEfiVariables = true;
-    };
+    systemd-boot.enable = true;
+    systemd-boot.configurationLimit = if hostname == "EvBook" then 5 else 10;
+    efi.canTouchEfiVariables = true;
+  };
+
+  # ============================================
+  # KERNEL MODULES
+  # ============================================
+  boot.kernelModules = [ "snd-usb-audio" ];
+
+
+  # ============================================
+  # DEVICE IDENTITY
+  # ============================================
+  networking.hostName = hostname;
 
 
   # ============================================
   # NETWORKING
   # ============================================
   networking.networkmanager.enable = true;
-
 
   # ============================================
   # LOCALE & TIMEZONE
@@ -38,7 +50,6 @@
     LC_TIME = "en_NZ.UTF-8";
   };
 
-
   # ============================================
   # KEYBOARD
   # ============================================
@@ -47,16 +58,18 @@
     variant = "";
   };
 
-
   # ============================================
   # USER ACCOUNT
   # ============================================
   users.users.evren = {
     isNormalUser = true;
     description = "Evren Packard";
-    extraGroups = [ "networkmanager" "wheel" "audio" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "audio"
+    ];
   };
-
 
   # ============================================
   # SECURITY & PERMISSIONS
@@ -64,13 +77,11 @@
   security.sudo.wheelNeedsPassword = false;
   nixpkgs.config.allowUnfree = true;
 
-
   # ============================================
   # DESKTOP ENVIRONMENT
   # ============================================
   programs.hyprland.enable = true;
   programs.hyprlock.enable = true;
-
 
   # ============================================
   # APPLICATIONS
@@ -80,12 +91,13 @@
     polkitPolicyOwners = [ "evren" ];
   };
 
-
   # ============================================
   # NIX SETTINGS
   # ============================================
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # ============================================
   # SERVICES
@@ -93,7 +105,6 @@
   services.openssh.enable = true;
   services.flatpak.enable = true;
   services.cloudflare-warp.enable = true;
-
 
   # ============================================
   # AUDIO (PipeWire)
@@ -105,8 +116,7 @@
     pulse.enable = true;
   };
 
-  services.pulseaudio.enable = false;  # Disable bc of PipeWire
-
+  services.pulseaudio.enable = false; # Disable bc of PipeWire
 
   # ============================================
   # SYSTEM PACKAGES
@@ -118,15 +128,14 @@
     tofi
   ];
 
-
   # ============================================
   # WAYLAND ENVIRONMENT VARIABLES
   # ============================================
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     WLR_NO_HARDWARE_CURSORS = "1";
+    SDL_VIDEODRIVER = "x11";
   };
-
 
   # ============================================
   # SYSTEM VERSION
@@ -134,9 +143,6 @@
 
   # DO NOT CHANGE
   system.stateVersion = "25.05";
-
-
-
 
   # graphical login, maybe one day
   #services.displayManager.sddm = {

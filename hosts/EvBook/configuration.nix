@@ -1,36 +1,25 @@
-{ config, pkgs, ... }:
 {
-  # ============================================
-  # IMPORTS
-  # ============================================
-  imports = [
-    ../common/base.nix
-    ./hardware-configuration.nix
-  ];
-
-
-  # ============================================
-  # DEVICE IDENTITY
-  # ============================================
-  networking.hostName = "EvBook";
-
-
+  config,
+  pkgs,
+  ...
+}:
+{
   # ============================================
   # KERNEL MODULES & AUDIO FIXES
   # ============================================
-  boot.kernelModules = [ "snd-usb-audio" "snd-hda-intel" ];
+  boot.kernelModules = [ "snd-hda-intel" ];
 
   boot.extraModprobeConfig = ''
     options snd-hda-intel model=auto probe_mask=1
   '';
 
-
   # ============================================
-  # AUDIO FIXES
+  # AUDIO FIXES (TODO: Actually fix 😭)
   # ============================================
   security.rtkit.enable = true;
   hardware.enableAllFirmware = true;
-
+  # IF YOU ENABLE `services.pipewire.wireplumber`,
+  # SAY GOODBYE TO WIFI :)
 
   # ============================================
   # POWER MANAGEMENT
@@ -49,17 +38,17 @@
       CPU_MIN_PERF_ON_AC = 0;
       CPU_MAX_PERF_ON_AC = 100;
       CPU_MIN_PERF_ON_BAT = 0;
-      CPU_MAX_PERF_ON_BAT = 75;  # Limit CPU speed on battery
+      CPU_MAX_PERF_ON_BAT = 75; # Limit CPU speed on battery
 
-      START_CHARGE_THRESH_BAT0 = 75;  # Start charging
-      STOP_CHARGE_THRESH_BAT0 = 80;   # Stop charging to preserves battery health
+      START_CHARGE_THRESH_BAT0 = 75; # Start charging
+      STOP_CHARGE_THRESH_BAT0 = 80; # Stop charging to preserves battery health
     };
   };
 
   # Lid and power button actions
   services.logind = {
-    lidSwitch = "suspend";            # Suspend on lid close
-    lidSwitchExternalPower = "lock";  # but lock when on external power
+    lidSwitch = "suspend";           # Suspend on lid close,
+    lidSwitchExternalPower = "lock"; # but lock when on external power
     extraConfig = ''
       HandlePowerKey=suspend
       IdleAction=suspend
@@ -69,7 +58,6 @@
 
   # PowerTOP auto-tuning for power savings ++
   powerManagement.powertop.enable = true;
-
 
   # ============================================
   # ADDITIONAL SYSTEM PACKAGES
