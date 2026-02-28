@@ -51,8 +51,6 @@
     lidSwitchExternalPower = "lock"; # but lock when on external power
     extraConfig = ''
       HandlePowerKey=suspend
-      IdleAction=suspend
-      IdleActionSec=15min
     '';
   };
 

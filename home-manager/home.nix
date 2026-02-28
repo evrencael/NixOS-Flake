@@ -135,6 +135,7 @@
     btop.enable = true;
     firefox.enable = true;
     hyprland.enable = true;
+    hyprlock.enable = true;
     mako.enable = true;
 
     tofi.enable = true; # disabled for opacity override
