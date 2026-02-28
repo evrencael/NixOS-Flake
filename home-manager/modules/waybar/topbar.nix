@@ -74,9 +74,9 @@ in
     "custom/warp" = {
       format = "{}";
       return-type = "json";
-      exec = "/home/evren/flake/home-manager/modules/waybar/scripts/warp-status.sh";
+      exec = "/home/evren/flake/home-manager/modules/waybar/scripts/status/warp.sh";
       interval = 1;
-      on-click = "/home/evren/flake/home-manager/modules/waybar/scripts/warp-toggle.sh";
+      on-click = "/home/evren/flake/home-manager/modules/waybar/scripts/toggle/warp.sh";
       tooltip = false;
     };
 
@@ -107,7 +107,7 @@ in
     "custom/brightness" = {
       format = "{}";
       return-type = "json";
-      exec = "/home/evren/flake/home-manager/modules/waybar/scripts/brightness-status.sh";
+      exec = "/home/evren/flake/home-manager/modules/waybar/scripts/status/brightness.sh";
       interval = 2;
       tooltip = true;
     };
@@ -115,9 +115,9 @@ in
     "custom/nosleep" = {
       format = "{}";
       return-type = "json";
-      exec = "/home/evren/flake/home-manager/modules/waybar/scripts/nosleep-status.sh";
+      exec = "/home/evren/flake/home-manager/modules/waybar/scripts/status/nosleep.sh";
       interval = 5;
-      on-click = "/home/evren/flake/home-manager/modules/waybar/scripts/nosleep-toggle.sh";
+      on-click = "/home/evren/flake/home-manager/modules/waybar/scripts/toggle/nosleep.sh";
       tooltip = false;
     };
   };
