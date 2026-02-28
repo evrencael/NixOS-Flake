@@ -11,14 +11,42 @@ HOSTNAMES=("EvTop" "EvBook")
 # AUTOCOMPLETION
 # ============================================
 
-# Possibly useful later
-#_completions() {
-#    local CUR="${COMP_WORDS[COMP_CWORD]}"
-#    COMPREPLY=($(compgen -W "$1" -- "$CUR"))
-#}
+_rebuild_completions() {
+    local CUR="${COMP_WORDS[COMP_CWORD]}"
+    local HOSTS="${HOSTNAMES[*]}"
 
-complete -W "${HOSTNAMES[*]}" rebuild rb
+    # Case-insensitive substring matching against hostnames
+    local MATCHES=()
+    local LOWER_CUR="${CUR,,}" # lowercase the input
+    for HOST in ${HOSTS}; do
+        local LOWER_HOST="${HOST,,}" # lowercase the hostname
+        # Match if input is a case-insensitive substring of the hostname
+        if [[ "$LOWER_HOST" == *"$LOWER_CUR"* ]]; then
+            MATCHES+=("$HOST")
+        fi
+    done
+
+    COMPREPLY=("${MATCHES[@]}")
+}
+
+complete -F _rebuild_completions rebuild rb
 complete -W "-a 1d 7d 30d" tidy
+
+# ============================================
+# SYSTEM
+# ============================================
+
+alias cls="clear" # tehehe
+alias cmat="cmatrix -s -b -u 6"
+alias hl="hyprland"
+alias la="ls -A --color=auto"
+alias ll="ls -la --color=auto"
+alias rs="echo 'Restarting . . .'; sudo shutdown -r now"
+alias sd="echo 'Shutting down . . .'; sudo shutdown -h now"
+
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
 
 # ============================================
 # CLOUDFLARE WARP
@@ -116,19 +144,3 @@ tidy() {
 
 alias up="sudo nix flake update"
 alias rb="rebuild"
-
-# ============================================
-# SYSTEM
-# ============================================
-
-alias cls="clear" # tehehe
-alias cmat="cmatrix -s -b -u 6"
-alias hl="hyprland"
-alias la="ls -A --color=auto"
-alias ll="ls -la --color=auto"
-alias rs="echo 'Restarting . . .'; sudo shutdown -r now"
-alias sd="echo 'Shutting down . . .'; sudo shutdown -h now"
-
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
