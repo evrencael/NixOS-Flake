@@ -13,52 +13,56 @@
     catppuccin.url = "github:catppuccin/nix?ref=v25.05";
   };
 
-  outputs = {...}@inputs:
-  let
-    # helper to create host config
-    mkHost = {
-      hostname,
-      configFile,
-      sysType ? "x86_64-linux"
-    }:
-    inputs.nixpkgs.lib.nixosSystem {
-      system = sysType;
-
-      modules = [
-        # device specific config
-        configFile
-
-        # set up alacritty theme
-        (_: {
-          nixpkgs.overlays = [ inputs.alacritty-theme.overlays.default ];
-        })
-
-        # config home-manager
-        inputs.home-manager.nixosModules.home-manager
+  outputs =
+    { ... }@inputs:
+    let
+      # helper to create host config
+      mkHost =
         {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            extraSpecialArgs = { inherit inputs hostname; };
-            users.evren = import ./home-manager/home.nix;
-          };
-        }
-      ];
-    };
-  in
-  {
-    nixosConfigurations = {
-      # desktop config [ see what i did ;) ]
-      EvTop = mkHost {
-        hostname = "EvTop";
-        configFile = ./hosts/evtop/configuration.nix;
-      };
+          hostname,
+          configFile,
+          sysType ? "x86_64-linux",
+        }:
+        inputs.nixpkgs.lib.nixosSystem {
+          system = sysType;
 
-      # laptop config
-      EvBook = mkHost {
-        hostname = "EvBook";
-        configFile = ./hosts/evbook/configuration.nix;
+          specialArgs = { inherit hostname; };
+
+          modules = [
+            # device specific config
+            configFile
+
+            # set up alacritty theme
+            (_: {
+              nixpkgs.overlays = [ inputs.alacritty-theme.overlays.default ];
+            })
+
+            # config home-manager
+            inputs.home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                extraSpecialArgs = { inherit inputs hostname; };
+                users.evren = import ./home-manager/home.nix;
+              };
+            }
+          ];
+        };
+    in
+    {
+      nixosConfigurations = {
+        # desktop config [ see what i did ;) ]
+        EvTop = mkHost {
+          hostname = "EvTop";
+          configFile = ./hosts/evtop/configuration.nix;
+        };
+
+        # laptop config
+        EvBook = mkHost {
+          hostname = "EvBook";
+          configFile = ./hosts/evbook/configuration.nix;
+        };
       };
     };
-  };
 }

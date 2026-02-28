@@ -1,4 +1,4 @@
-{ hostname, ...}:
+{ hostname, ... }:
 {
   # hyprland config
   wayland.windowManager.hyprland = {
@@ -7,20 +7,29 @@
     xwayland.enable = true;
 
     settings = {
-      monitor = if hostname == "EvBook"
-        then ",preferred,auto,1.26" # zoom in on retina display
-        else ",preferred,auto,1.0";
+      monitor =
+        if hostname == "EvBook" then
+          ",preferred,auto,1.26" # zoom in on retina display
+        else
+          ",preferred,auto,1.0";
 
       "$mainMod" = "SUPER";
       "$terminal" = "alacritty";
       "$menu" = "tofi-drun | xargs hyprctl dispatch exec --";
 
+      windowrulev2 = [
+        "workspace 1, class:code"
+        "workspace 2, class:firefox"
+        "workspace 3, class:Spotify"
+        "workspace 5, class:vesktop"
+      ];
+
       exec-once = [
         "mako"
         "waybar"
-        "hyprctl dispatch exec '[workspace 1 silent] code'"
-        "hyprctl dispatch exec '[workspace 2 silent] firefox'"
-        "hyprctl dispatch exec '[workspace 3 silent] flatpak run com.spotify.Client'"
+        "hyprctl dispatch exec flatpak run com.spotify.Client"
+        "hyprctl dispatch exec firefox"
+        "hyprctl dispatch exec code"
       ];
 
       env = [
@@ -35,7 +44,6 @@
       general = {
         gaps_in = 5;
         gaps_out = 10;
-
 
         "col.active_border" = "rgba(139cffee) rgba(c144ffee) 45deg";
         "col.inactive_border" = "rgba(595959aa)";

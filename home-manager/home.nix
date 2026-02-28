@@ -19,20 +19,24 @@
     cloudflare-warp
     prismlauncher
 
-
     vscode
     evtest
     sqlite
 
     python3
+    python312Packages.pygame
+    nodejs
+    nodePackages.npm
 
     gh
+    nixfmt-tree
+    nixfmt-rfc-style
 
     neofetch
     cmatrix
 
-    pavucontrol  # GUI audio control
-    playerctl    # Media player control
+    pavucontrol # GUI audio control
+    playerctl # Media player control
     unzip
 
     numbat
@@ -90,7 +94,6 @@
     '')
   ];
 
-
   # get tofi to recognise spotify, that was a bit annoying
   # Not sure I need this, I think it works fine without,
   # was causing a problem. prolly useful just in case
@@ -121,7 +124,6 @@
       source /home/evren/flake/aliases.sh
     '';
   };
-
 
   # config for catppuccin
   catppuccin = {
