@@ -31,6 +31,8 @@
           specialArgs = { inherit hostname rootUUID bootUUID swapUUID; };
 
           modules = [
+            inputs.catppuccin.nixosModules.catppuccin
+            
             # base config for all hosts
             ./hosts/base/configuration.nix
             ./hosts/base/hardware-configuration.nix

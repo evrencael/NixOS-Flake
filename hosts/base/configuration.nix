@@ -83,6 +83,21 @@
   programs.hyprland.enable = true;
   programs.hyprlock.enable = true;
 
+
+  # ============================================
+  # DISPLAY MANAGER
+  # ============================================
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+    package = pkgs.kdePackages.sddm;
+  };
+
+  catppuccin.sddm = {
+    enable = true;
+    flavor = "mocha";
+  };
+
   # ============================================
   # APPLICATIONS
   # ============================================
@@ -90,6 +105,7 @@
     enable = true;
     polkitPolicyOwners = [ "evren" ];
   };
+
 
   # ============================================
   # NIX SETTINGS
@@ -143,10 +159,4 @@
 
   # DO NOT CHANGE
   system.stateVersion = "25.05";
-
-  # graphical login, maybe one day
-  #services.displayManager.sddm = {
-  #  enable = true;
-  #  wayland.enable = true;
-  #};
 }
