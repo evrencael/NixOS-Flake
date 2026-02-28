@@ -1,4 +1,4 @@
-{ hostname, ...}:
+{ hostname, ... }:
 let
   # Common binds for all devices
   commonBinds = [
@@ -13,7 +13,8 @@ let
     "$mainMod, UP, swapwindow, u"
     "$mainMod, DOWN, swapwindow, d"
 
-    "$mainMod, F, togglefloating"  # fullscreen
+    # fullscreen toggle
+    "$mainMod, F, fullscreen"
 
     # switch workspaces
     "$mainMod, 1, exec, hyprctl dispatch workspace 1"
@@ -40,8 +41,7 @@ let
     "$mainMod+SHIFT, 0, movetoworkspace, 10"
   ];
 
-  commonBindl = [];
-
+  commonBindl = [ ];
 
   # Device-specific binds
   deviceBinds = {
@@ -61,11 +61,10 @@ let
     ];
   };
 
-
   # Device-specific lock binds
   deviceBindl = {
     EvTop = [
-      ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5%+"  # increases by 5% for some reason
+      ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5%+" # increases by 5% for some reason
       ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5%-"
       ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
 
@@ -101,8 +100,8 @@ let
 in
 {
   wayland.windowManager.hyprland.settings = {
-    bind = commonBinds ++ (deviceBinds.${hostname} or []);
-    bindl = commonBindl ++ (deviceBindl.${hostname} or []);
+    bind = commonBinds ++ (deviceBinds.${hostname} or [ ]);
+    bindl = commonBindl ++ (deviceBindl.${hostname} or [ ]);
 
     binds = {
       drag_threshold = 10;

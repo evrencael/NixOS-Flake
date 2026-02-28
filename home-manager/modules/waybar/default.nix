@@ -7,8 +7,8 @@
   ];
 
   programs.waybar = {
-  enable = true;
-  package = pkgs.waybar;
-  style = ./style.css;  # Utilizes catppuccin
-};
+    enable = true;
+    package = pkgs.waybar;
+    style = ./style.css; # Utilizes catppuccin
+  };
 }

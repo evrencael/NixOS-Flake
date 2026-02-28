@@ -1,6 +1,6 @@
 {
-    imports = [
-        ./binds.nix
-        ./config.nix
-    ];
+  imports = [
+    ./binds.nix
+    ./config.nix
+  ];
 }
