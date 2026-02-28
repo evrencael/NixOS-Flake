@@ -112,7 +112,6 @@
     settings = {
       scrolling.multiplier = 5;
       selection.save_to_clipboard = true;
-      #general.import = [ pkgs.alacritty-theme.nightfox ];
       #window.opacity = 0.8;
     };
   };
@@ -131,7 +130,7 @@
 
     # manually enable all apps
     alacritty.enable = true;
-    waybar.enable = false;
+    waybar.enable = false; # enable once to download theme
     #vesktop.enable = true;
     btop.enable = true;
     firefox.enable = true;
