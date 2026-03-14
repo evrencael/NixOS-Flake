@@ -4,7 +4,6 @@
 # CONSTANTS
 # ============================================
 
-SPOTIFY_APP="com.spotify.Client"
 HOSTNAMES=("EvTop" "EvBook")
 
 # ============================================
@@ -96,17 +95,19 @@ alias gs="git status"
 
 rebuild() {
     if [ -z "$1" ]; then
-        echo "Usage: rebuild [device name]"
-        return 1
+        local target_host="$HOSTNAME"
+        echo "Rebuilding for host: $target_host"
     else
-        if sudo nixos-rebuild switch --flake $HOME/flake#$1; then
-            rm -f $HOME/.cache/tofi-drun # get tofi to recognise new apps
-            cls
-            echo "Rebuild successful :)"
-        else
-            echo "Rebuild failed :("
-            return 1
-        fi
+        local target_host="$1"
+    fi
+
+    if sudo nixos-rebuild switch --flake $HOME/flake#$target_host; then
+        rm -f $HOME/.cache/tofi-drun # get tofi to recognise new apps
+        cls
+        echo "Rebuild successful :)"
+    else
+        echo "Rebuild failed :("
+        return 1
     fi
 }
 
@@ -122,5 +123,3 @@ tidy() {
 
 alias up="sudo nix flake update"
 alias rb="rebuild"
-alias nosleep="pkill hypridle && echo 'Auto-sleep disabled'"
-alias sleep-on="hypridle & echo 'Auto-sleep enabled'"
