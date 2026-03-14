@@ -46,6 +46,7 @@
     hyprpaper
 
     spotify
+    libgcc
 
     # fonts
     noto-fonts-emoji
