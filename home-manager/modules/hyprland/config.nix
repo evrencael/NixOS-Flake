@@ -30,7 +30,7 @@
       exec-once = [
         "mako"
         "waybar"
-        "hyprctl dispatch exec flatpak run com.spotify.Client"
+        "hyprctl dispatch exec spotify"
         "hyprctl dispatch exec firefox"
         "hyprctl dispatch exec code"
       ];

@@ -58,28 +58,6 @@ alias wreg="warp-cli registration new"
 alias wstat="warp-cli status"
 
 # ============================================
-# FLATPAK
-# ============================================
-
-flatpak_reinstall() {
-    flatpak remote-add --if-not-exists flathub \
-        https://flathub.org/repo/flathub.flatpakrepo
-
-    flatpak install flathub $SPOTIFY_APP -y
-}
-
-flatpak_uninstall_all() {
-    flatpak uninstall --all -y
-    flatpak remote-delete flathub
-}
-
-alias flatup="flatpak update -y"
-alias flatre="flatpak_reinstall"
-alias flatun="flatpak_uninstall_all"
-alias spotify="flatpak run $SPOTIFY_APP"
-
-
-# ============================================
 # GIT
 # ============================================
 

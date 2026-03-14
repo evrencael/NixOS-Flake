@@ -45,6 +45,8 @@
 
     hyprpaper
 
+    spotify
+
     # fonts
     noto-fonts-emoji
     nerd-fonts.geist-mono
@@ -89,19 +91,10 @@
       if [ "$CURRENT_CLASS" = "Spotify" ]; then
         hyprctl dispatch focuscurrentorlast
       else
-        hyprctl dispatch focuswindow class:Spotify || flatpak run com.spotify.Client
+        hyprctl dispatch focuswindow class:Spotify || spotify
       fi
     '')
   ];
-
-  # get tofi to recognise spotify, that was a bit annoying
-  # Not sure I need this, I think it works fine without,
-  # was causing a problem. prolly useful just in case
-  #
-  #home.file.".local/share/applications/com.spotify.Client.desktop".source =
-  #  "${pkgs.writeShellScriptBin "resolve-flatpak-path" ''
-  #    echo /var/lib/flatpak/exports/share/applications/com.spotify.Client.desktop
-  #  ''}";
 
   # vesktop config
   programs.vesktop.enable = true;
