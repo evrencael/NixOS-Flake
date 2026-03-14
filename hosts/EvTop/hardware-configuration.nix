@@ -3,6 +3,20 @@
   ...
 }:
 {
+  fileSystems."/shared" = {
+    device = "/dev/disk/by-uuid/944C-9295";
+    fsType = "exfat";
+    options = [
+      "uid=1000"
+      "gid=100"
+      "umask=0022"
+      "nofail"
+      "noatime"
+      "nosuid"
+      "nodev"
+    ];
+  };
+
   boot.initrd.availableKernelModules = [
     "ahci"
     "usbhid"
