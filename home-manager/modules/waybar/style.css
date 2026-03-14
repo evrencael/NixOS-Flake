@@ -35,10 +35,11 @@ Style sheet for Waybar using Catppuccin Mocha theme
 #window,
 #custom-warp,
 #custom-brightness,
-#custom-nosleep,
+#idle_inhibitor,
 #mpris,
 #workspaces button,
-#taskbar button {
+#taskbar button,
+tooltip {
     background: @surface0;
     border-radius: 8px;
     color: @text;
@@ -48,9 +49,17 @@ Style sheet for Waybar using Catppuccin Mocha theme
 }
 
 
+/* === Tooltips === */
+
+tooltip {
+    font-size: 10px;
+    opacity: 0.8;
+}
+
+
 /* === Padding for 1 char icon === */
 
-#custom-nosleep {
+#idle_inhibitor {
     padding-right: 16px;
 }
 
@@ -80,6 +89,7 @@ Style sheet for Waybar using Catppuccin Mocha theme
     50% { opacity: 0.5; }
 }
 
+
 /* === Button Styling  === */
 
 #workspaces button,
@@ -87,21 +97,23 @@ Style sheet for Waybar using Catppuccin Mocha theme
     padding: 0 8px;
 }
 
+
 /* === On/Off Styling === */
 
 #custom-warp.on,
-#custom-nosleep.on,
+#idle_inhibitor:not(.activated),
 #workspaces button.active,
 #taskbar button.active {
     background: @mauve;
     color: @base;
 }
 
+
 /* === Hover Effects === */
 
 #workspaces button:hover,
 #taskbar button:hover,
-#custom-nosleep:hover,
+#idle_inhibitor:hover,
 #custom-warp:hover {
     box-shadow: inset 0 -4px @mauve;
 }
@@ -109,7 +121,7 @@ Style sheet for Waybar using Catppuccin Mocha theme
 
 #workspaces button.active:hover,
 #taskbar button.active:hover,
-#custom-nosleep.on:hover,
+#idle_inhibitor:not(.activated):hover,
 #custom-warp.on:hover {
     box-shadow: inset 0 -4px @surface0;
 }

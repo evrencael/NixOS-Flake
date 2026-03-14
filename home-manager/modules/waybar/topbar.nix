@@ -17,7 +17,7 @@ in
       "privacy"
     ]
     ++ (if isLaptop then [ "custom/brightness" ] else [])
-    ++ (if !isLaptop then [ "custom/nosleep" ] else [])
+    ++ (if !isLaptop then [ "idle_inhibitor" ] else [])
     ++ [
       "custom/warp"
       "custom/lock"
@@ -56,7 +56,7 @@ in
     };
     "disk" = {
       format = "󰋊 {percentage_used}%";
-      tooltip-format = "{used:0.1f}GiB / {total:0.1f}GiB";
+      tooltip-format = "{used} / {total}";
     };
 
     "wireplumber" = {
@@ -108,12 +108,12 @@ in
       tooltip = true;
     };
 
-    "custom/nosleep" = {
-      format = "{}";
-      return-type = "json";
-      exec = "/home/evren/flake/home-manager/modules/waybar/scripts/status/nosleep.sh";
-      interval = 5;
-      on-click = "/home/evren/flake/home-manager/modules/waybar/scripts/toggle/nosleep.sh";
+    "idle_inhibitor" = {
+      format = "{icon}";
+      format-icons = {
+        activated = "󰒲";
+        deactivated = "󰒳";
+      };
       tooltip = false;
     };
   };
