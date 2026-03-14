@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 if pgrep -x hypridle > /dev/null; then
-    echo '{"text":"󰒳 Sleep", "class":"on"}'
+    echo '{"text":"󰒲", "class":"on"}'
 else
-    echo '{"text":"󰒳 Sleep", "class":"off"}'
+    echo '{"text":"󰒳", "class":"off"}'
 fi

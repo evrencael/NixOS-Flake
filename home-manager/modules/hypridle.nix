@@ -20,20 +20,20 @@ in
         # lock screen after: 5 mins on EvBook, 10 mins on EvTop
         {
           timeout = if isLaptop then 300 else 600;
-          on_timeout = "loginctl lock-session";
+          on-timeout = "loginctl lock-session";
         }
 
         # turn off display after: 10 mins on EvBook, 20 mins on EvTop
         {
           timeout = if isLaptop then 600 else 1200;
-          on_timeout = "hyprctl dispatch dpms off";
-          on_resume = "hyprctl dispatch dpms on";
+          on-timeout = "hyprctl dispatch dpms off";
+          on-resume = "hyprctl dispatch dpms on";
         }
       ]
       # shutdown after 60 mins on EvTop (EvBook uses logind suspend)
       ++ (if !isLaptop then [{
         timeout = if isLaptop then 900 else 3600;
-        on_timeout = "systemctl poweroff";
+        on-timeout = "systemctl poweroff";
       }] else []);
     };
   };
