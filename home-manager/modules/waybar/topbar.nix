@@ -23,8 +23,7 @@ in
       "custom/lock"
       "wireplumber"
     ]
-    ++ (if isLaptop then [ "battery" ] else [])
-    ++ [ "clock" ];
+    ++ (if isLaptop then [ "battery" ] else []);
 
     height = 38;
     margin = "5 5 0 5";
@@ -53,9 +52,11 @@ in
     };
     "memory" = {
       format = "  {percentage}%";
+      tooltip-format = "{used:0.1f}GiB / {total:0.1f}GiB";
     };
     "disk" = {
       format = "󰋊 {percentage_used}%";
+      tooltip-format = "{used:0.1f}GiB / {total:0.1f}GiB";
     };
 
     "wireplumber" = {
@@ -78,11 +79,6 @@ in
       interval = 1;
       on-click = "/home/evren/flake/home-manager/modules/waybar/scripts/toggle/warp.sh";
       tooltip = false;
-    };
-
-    "clock" = {
-      format = "{:%a %d %b}";
-      interval = 60;
     };
 
     "battery" = {
