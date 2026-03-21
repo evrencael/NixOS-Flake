@@ -13,7 +13,6 @@
   home.packages = with pkgs; [
     btop
     tofi
-    mako
 
     firefox
     cloudflare-warp
@@ -46,7 +45,6 @@
     hyprpaper
 
     spotify
-    libgcc
 
     # fonts
     noto-fonts-emoji
@@ -89,10 +87,10 @@
     (writeShellScriptBin "spotify-focus-toggle" ''
       CURRENT_CLASS=$(hyprctl activewindow -j | grep -o '"class": "[^"]*"' | cut -d'"' -f4)
 
-      if [ "$CURRENT_CLASS" = "Spotify" ]; then
+      if [ "$CURRENT_CLASS" = "spotify" ]; then
         hyprctl dispatch focuscurrentorlast
       else
-        hyprctl dispatch focuswindow class:Spotify || spotify
+        hyprctl dispatch focuswindow class:spotify || spotify
       fi
     '')
   ];
@@ -110,6 +108,15 @@
     };
   };
 
+  # mako config
+  services.mako = {
+    enable = true;
+    settings = {
+      "app-name=Spotify" = {
+        hidden = true;
+      };
+    };
+  };
   # Bash aliases & functions
   programs.bash = {
     enable = true;

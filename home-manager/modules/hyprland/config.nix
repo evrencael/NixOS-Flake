@@ -23,7 +23,7 @@
       windowrulev2 = [
         "workspace 1, class:code"
         "workspace 2, class:firefox"
-        "workspace 3, class:Spotify"
+        "workspace 3, class:spotify"
         "workspace 5, class:vesktop"
       ];
 
