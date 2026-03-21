@@ -7,18 +7,39 @@
 }:
 {
   # ============================================
-  # BOOTLOADER
+  # BOOT CONFIG
   # ============================================
-  boot.loader = {
-    systemd-boot.enable = true;
-    systemd-boot.configurationLimit = if hostname == "EvBook" then 5 else 10;
-    efi.canTouchEfiVariables = true;
-  };
+  boot =
+  let
+    scpPlymouthTheme = pkgs.stdenv.mkDerivation {
+      name = "plymouth-theme-scp";
+      src = pkgs.fetchFromGitHub {
+        owner = "TechCiel";
+        repo = "plymouth-theme-scp";
+        rev = "master";
+        sha256 = "sha256-o8YC6kn481ErrdBBUo+0c2BL7ekyRASpVEuEEn3c//k="; # replace after first failed build
+      };
+      installPhase = ''
+        mkdir -p $out/share/plymouth/themes/scp
+        cp -r * $out/share/plymouth/themes/scp/
+      '';
+    };
+  in
+  {
+    loader = {
+      systemd-boot.enable = true;
+      systemd-boot.configurationLimit = if hostname == "EvBook" then 5 else 10;
+      efi.canTouchEfiVariables = true;
+    };
 
-  # ============================================
-  # KERNEL MODULES
-  # ============================================
-  boot.kernelModules = [ "snd-usb-audio" ];
+    kernelModules = [ "snd-usb-audio" ];
+
+    plymouth = {
+      enable = true;
+      theme = "scp";
+      themePackages = [ scpPlymouthTheme ];
+    };
+  };
 
 
   # ============================================
@@ -31,6 +52,7 @@
   # NETWORKING
   # ============================================
   networking.networkmanager.enable = true;
+
 
   # ============================================
   # LOCALE & TIMEZONE
@@ -50,6 +72,7 @@
     LC_TIME = "en_NZ.UTF-8";
   };
 
+
   # ============================================
   # KEYBOARD
   # ============================================
@@ -57,6 +80,7 @@
     layout = "nz";
     variant = "";
   };
+
 
   # ============================================
   # USER ACCOUNT
@@ -71,11 +95,13 @@
     ];
   };
 
+
   # ============================================
   # SECURITY & PERMISSIONS
   # ============================================
   security.sudo.wheelNeedsPassword = false;
   nixpkgs.config.allowUnfree = true;
+
 
   # ============================================
   # DESKTOP ENVIRONMENT
@@ -87,16 +113,34 @@
   # ============================================
   # DISPLAY MANAGER
   # ============================================
-  services.displayManager.sddm = {
-    enable = true;
-    wayland.enable = true;
-    package = pkgs.kdePackages.sddm;
+  services.greetd = {
+  enable = true;
+  settings = {
+    default_session = {
+      command = ''
+        ${pkgs.greetd.tuigreet}/bin/tuigreet \
+          --time \
+          --asterisks \
+          --greeting "$(printf '
+        ░██████╗░█████╗░██████╗
+        ██╔════╝██╔══██╗██╔══██╗
+        ╚█████╗ ██║  ╚═╝██████╔╝
+        ╚════██╗██║  ██╗██╔═══╝
+        ██████╔╝╚█████╔╝██║
+        ╚═════╝  ╚════╝ ╚═╝
+
+        [ FOUNDATION SECURE TERMINAL ]
+        [ ACCESS LEVEL: ██████       ]
+        [ AUTHENTICATE TO PROCEED    ]')" \
+          --theme "border=#00ff41;text=#00ff41;prompt=#00ff41;time=#00cc33;action=#00ff41;button=#003300;container=#0a0a0a;input=#00ff41" \
+          --width 80 \
+          --cmd Hyprland
+        '';
+      user = "greeter";
+      };
+    };
   };
 
-  catppuccin.sddm = {
-    enable = true;
-    flavor = "mocha";
-  };
 
   # ============================================
   # APPLICATIONS
@@ -115,11 +159,19 @@
     "flakes"
   ];
 
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = false;
+    dedicatedServer.openFirewall = false;
+  };
+
+
   # ============================================
   # SERVICES
   # ============================================
   services.openssh.enable = true;
   services.cloudflare-warp.enable = true;
+
 
   # ============================================
   # AUDIO (PipeWire)
@@ -133,6 +185,7 @@
 
   services.pulseaudio.enable = false; # Disable bc of PipeWire
 
+
   # ============================================
   # SYSTEM PACKAGES
   # ============================================
@@ -143,6 +196,7 @@
     tofi
   ];
 
+
   # ============================================
   # WAYLAND ENVIRONMENT VARIABLES
   # ============================================
@@ -152,10 +206,9 @@
     SDL_VIDEODRIVER = "x11";
   };
 
-  # ============================================
-  # SYSTEM VERSION
-  # ============================================
 
-  # DO NOT CHANGE
+  # ============================================
+  # SYSTEM VERSION (DO NOT CHANGE)
+  # ============================================
   system.stateVersion = "25.05";
 }
