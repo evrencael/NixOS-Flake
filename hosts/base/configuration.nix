@@ -5,27 +5,66 @@
   hostname,
   ...
 }:
+let
+  scpPlymouthTheme = pkgs.stdenv.mkDerivation {
+    name = "plymouth-theme-scp";
+    src = pkgs.fetchFromGitHub {
+      owner = "TechCiel";
+      repo = "plymouth-theme-scp";
+      rev = "master";
+      sha256 = "sha256-o8YC6kn481ErrdBBUo+0c2BL7ekyRASpVEuEEn3c//k="; # replace after first failed build
+    };
+    installPhase = ''
+      mkdir -p $out/share/plymouth/themes/scp
+      cp -r * $out/share/plymouth/themes/scp/
+    '';
+  };
+
+  scpBootSplash = pkgs.stdenv.mkDerivation {
+    name = "scp-boot-splash";
+    src = pkgs.fetchFromGitHub {
+      owner = "s-ankur";
+      repo = "scp-boot-splash";
+      rev = "master";
+      sha256 = "sha256-KWmCPzFGeRStf1dFlHrktIQQtiePl9iwHHPmYo9SjJs="; # replace `pkgs.lib.fakeSha256` after first failed build
+    };
+    installPhase = ''
+      mkdir -p $out/share/plymouth/themes/scp-boot-splash
+      cp -r * $out/share/plymouth/themes/scp-boot-splash/
+    '';
+  };
+
+  greetdScript = pkgs.writeShellScript "tuigreet-launch" ''
+    exec ${pkgs.greetd.tuigreet}/bin/tuigreet \
+      --time \
+      --asterisks \
+      --greeting "$(cat /etc/greetd/greeting.txt)" \
+      --theme "border=#00ff41;text=#00ff41;prompt=#00ff41;time=#00cc33;action=#00ff41;button=#003300;container=#0a0a0a;input=#00ff41" \
+      --width 120 \
+      --cmd Hyprland
+  '';
+in
 {
+  # ============================================
+  # GREETD GREETING
+  # ============================================
+  environment.etc."greetd/greeting.txt".text = ''
+███████╗ ██████╗██████╗     ███████╗ ██████╗ ██╗   ██╗███╗   ██╗██████╗  █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
+██╔════╝██╔════╝██╔══██╗    ██╔════╝██╔═══██╗██║   ██║████╗  ██║██╔══██╗██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
+███████╗██║     ██████╔╝    █████╗  ██║   ██║██║   ██║██╔██╗ ██║██║  ██║███████║   ██║   ██║██║   ██║██╔██╗ ██║
+╚════██║██║     ██╔═══╝     ██╔══╝  ██║   ██║██║   ██║██║╚██╗██║██║  ██║██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
+███████║╚██████╗██║         ██║     ╚██████╔╝╚██████╔╝██║ ╚████║██████╔╝██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
+╚══════╝ ╚═════╝╚═╝         ╚═╝      ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+
+Secure | Contain | Protect
+
+— [ ACCESS PORTAL: SCiPNET TERMINAL ] —
+  '';
+
   # ============================================
   # BOOT CONFIG
   # ============================================
-  boot =
-  let
-    scpPlymouthTheme = pkgs.stdenv.mkDerivation {
-      name = "plymouth-theme-scp";
-      src = pkgs.fetchFromGitHub {
-        owner = "TechCiel";
-        repo = "plymouth-theme-scp";
-        rev = "master";
-        sha256 = "sha256-o8YC6kn481ErrdBBUo+0c2BL7ekyRASpVEuEEn3c//k="; # replace after first failed build
-      };
-      installPhase = ''
-        mkdir -p $out/share/plymouth/themes/scp
-        cp -r * $out/share/plymouth/themes/scp/
-      '';
-    };
-  in
-  {
+  boot = {
     loader = {
       systemd-boot.enable = true;
       systemd-boot.configurationLimit = if hostname == "EvBook" then 5 else 10;
@@ -33,11 +72,27 @@
     };
 
     kernelModules = [ "snd-usb-audio" ];
+    kernelParams = [
+      "quiet"
+      "splash"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
+    ];
 
     plymouth = {
       enable = true;
-      theme = "scp";
-      themePackages = [ scpPlymouthTheme ];
+      theme = "scp-boot-splash";
+      themePackages = [ scpBootSplash ];
+
+      extraConfig = ''
+        ShowDelay=0
+      '';
+    };
+
+    initrd = {
+      systemd.enable = true;
+      kernelModules = [ "i915" ];
     };
   };
 
@@ -114,31 +169,18 @@
   # DISPLAY MANAGER
   # ============================================
   services.greetd = {
-  enable = true;
-  settings = {
-    default_session = {
-      command = ''
-        ${pkgs.greetd.tuigreet}/bin/tuigreet \
-          --time \
-          --asterisks \
-          --greeting "$(printf '
-        ░██████╗░█████╗░██████╗
-        ██╔════╝██╔══██╗██╔══██╗
-        ╚█████╗ ██║  ╚═╝██████╔╝
-        ╚════██╗██║  ██╗██╔═══╝
-        ██████╔╝╚█████╔╝██║
-        ╚═════╝  ╚════╝ ╚═╝
-
-        [ FOUNDATION SECURE TERMINAL ]
-        [ ACCESS LEVEL: ██████       ]
-        [ AUTHENTICATE TO PROCEED    ]')" \
-          --theme "border=#00ff41;text=#00ff41;prompt=#00ff41;time=#00cc33;action=#00ff41;button=#003300;container=#0a0a0a;input=#00ff41" \
-          --width 80 \
-          --cmd Hyprland
-        '';
-      user = "greeter";
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${greetdScript}";
+        user = "greeter";
       };
     };
+  };
+
+  # Let plymouth play
+  systemd.services.greetd.serviceConfig = {
+    ExecStartPre = "${pkgs.coreutils}/bin/sleep 3";
   };
 
 

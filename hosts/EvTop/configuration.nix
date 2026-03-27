@@ -21,4 +21,7 @@
     # use stable drivers
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+
+  boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_drm" ];
+  boot.kernelParams = [ "nvidia-drm.modeset=1" ];
 }
