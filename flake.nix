@@ -2,15 +2,15 @@
   description = "My (hopefully not too bad) NixOS Flake"; # Thank you Creator34 & prolly many others :)
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
-    catppuccin.url = "github:catppuccin/nix?ref=v25.05";
+    catppuccin.url = "github:catppuccin/nix?ref=v26.05";
   };
 
   outputs =

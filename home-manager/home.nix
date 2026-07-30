@@ -25,13 +25,13 @@
     python3
     python312Packages.pygame
     nodejs
-    nodePackages.npm
 
     gh
+    nixfmt
     nixfmt-tree
-    nixfmt-rfc-style
+    hyprpolkitagent
 
-    neofetch
+    #neofetch
     cmatrix
 
     pavucontrol # GUI audio control
@@ -47,7 +47,7 @@
     spotify
 
     # fonts
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     nerd-fonts.geist-mono
     nerd-fonts.fira-code
     fira-code-symbols
