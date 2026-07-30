@@ -1,0 +1,169 @@
+/* === Constants === */
+inner_str = "inner_ring.png";
+outer_str = "outer_ring.png";
+arrow_str = "arrow.png";
+box_str = "box.png";
+bullet_str = "bullet.png";
+lock_str = "lock.png";
+entry_str = "entry.png";
+progress_box_str = "progress_box.png";
+progress_bar_str = "progress_bar.png";
+status = "normal";
+
+deg_to_rad = Math.Pi / 180;
+deg_120 = 120 * deg_to_rad; /* 120° is 2π/3 */
+deg_240 = 240 * deg_to_rad; /* 240° is 4π/3 */
+deg_360 = 360 * deg_to_rad; /* 360° is 2π   */
+
+theta = 0;       /* ∠ in rads */
+progress = 0;    /* 0 to 1 */
+rate = 6 / 360;  /* rotate 6° per frame */
+direction = 1;   /* 1 = clockwise, -1 = anti-clockwise */
+
+DIALOG_Z = 10000;
+ARROW_COUNT = 3;
+
+
+/* === Window Setup === */
+Window.SetBackgroundTopColor(0, 0, 0);
+Window.SetBackgroundBottomColor(0, 0, 0);
+
+scale_to = Window.GetWidth() / 7;
+scale_from = Image(inner_str).GetWidth();
+scale = scale_to / scale_from;
+arrow_scale = scale_to / 3;
+
+winX = Window.GetX() + Window.GetWidth() / 2;
+winY = Window.GetY() + Window.GetHeight() / 2;
+
+
+/* === Helpers === */
+
+fun LoadImage(filename)
+  /*
+  loads and scales an image,
+  generating an object (obj):
+    obj.image : scaled image
+    obj.x : width of scaled image
+    obj.y : height of scaled image
+    obj.hx : half width of scaled image
+    obj.hy : half height of scaled image
+    obj.sprite : sprite created from scaled image
+  */
+  {
+    local.res;
+    res.image = Image(filename);
+    height = res.image.GetHeight() * scale;
+    width = res.image.GetWidth() * scale;
+
+    if (filename == "arrow.png")
+      {
+        res.image = res.image.Scale(width, height * 0.9);
+      }
+    else
+      {
+        res.image = res.image.Scale(width, height);
+      }
+
+    res.x = res.image.GetWidth();
+    res.y = res.image.GetHeight();
+    res.hx = res.x / 2;
+    res.hy = res.y / 2;
+    res.sprite = Sprite(res.image);
+    return res;
+  }
+
+fun QuarticEaseInOut(p)
+  /*
+  A quartic easing function with smooth ease in and out
+  p : animation progress (0 to 1)
+
+  returns : eased value (0 to 1)
+  */
+  {
+    if (p < 0.5)
+      {
+        return 8 * p * p * p * p;
+      }
+    else
+      {
+        local.inv = 1 - p;
+        return 1 - 8 * inv * inv * inv * inv;
+      }
+  }
+
+fun UpdateArrow(arrow, theta)
+  {
+    y_dist = Math.Cos(theta) * arrow_scale;
+    x_dist = Math.Sin(theta) * arrow_scale;
+
+    arrow.sprite.SetImage(arrow.image.Rotate(theta));
+    arrow.sprite.SetX(winX - arrow.hx + x_dist);
+    arrow.sprite.SetY(winY - arrow.hy - y_dist);
+  }
+
+/* === Loading === */
+
+inner_ring = LoadImage("inner_ring.png");
+outer_ring = LoadImage("outer_ring.png");
+arrow1 = LoadImage("arrow.png");
+arrow2 = LoadImage("arrow.png");
+arrow3 = LoadImage("arrow.png");
+
+UpdateArrow(arrow1, 0);
+
+
+fun refresh_callback ()
+  {
+    if (status == "normal")
+      {
+        inner_ring.sprite.SetX(winX - inner_ring.hx);
+        inner_ring.sprite.SetY(winY - inner_ring.hy);
+
+        outer_ring.sprite.SetX (winX - outer_ring.hx);
+        outer_ring.sprite.SetY (winY - outer_ring.hy - outer_ring.y / 29);
+
+        progress += rate * direction;
+        progress = Math.Clamp(progress, 0, 1);
+
+        if (progress == 1)
+          {
+            direction = -1;
+          }
+        if (progress == 0)
+          {
+            direction = 1;
+          }
+
+        theta = QuarticEaseInOut(progress) * deg_360;
+
+        t1 = Math.Min(theta, deg_120);
+        t2 = Math.Min(theta, deg_240);
+
+        UpdateArrow(arrow2, t1);
+        UpdateArrow(arrow3, t2);
+
+      }
+    else
+      {
+        outer_ring.sprite.SetX (0);
+        outer_ring.sprite.SetY (0);
+
+        outer_ring.sprite.SetX (0);
+        outer_ring.sprite.SetY (0);
+      }
+  }
+
+Plymouth.SetRefreshFunction (refresh_callback);
+
+status = "normal";
+
+fun display_normal_callback ()
+  {
+    global.status = "normal";
+  }
+
+Plymouth.SetDisplayNormalFunction(display_normal_callback);
+
+
+/* [^{}();/]$ */

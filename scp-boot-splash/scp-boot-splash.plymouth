@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=SCP Foundation Boot Theme
+Description=Shows an animated SCP Foundation Logo
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/scp-boot-splash
+ScriptFile=/usr/share/plymouth/themes/scp-boot-splash/scp-boot-splash.script

@@ -1,0 +1,66 @@
+fun refresh_callback ()
+  {
+    if (status == "normal")
+      {
+        textt.sprite.SetX(0);
+        textt.sprite.SetY(0);
+        textt.sprite.SetOpacity(1);
+
+
+        inner_ring.sprite.SetX (winX - inner_ring.hx);
+        inner_ring.sprite.SetY (WinY - inner_ring.hy);
+
+        outer_ring.sprite.SetX (winX - outer_ring.hx);
+        outer_ring.sprite.SetY (WinY - outer_ring.hy - outer_ring.y / 29);
+
+        theta = (theta + omega) % 720;
+
+        y_dist1 = Math.Cos(0) * arrow_scale;
+        x_dist1 = Math.Sin(0) * arrow_scale;
+
+        if (theta < 120)
+        {
+          y_dist2 = Math.Cos(theta * deg_to_rad) * arrow_scale;
+          x_dist2 = Math.Sin(theta * deg_to_rad) * arrow_scale;
+          rotate2 = arrow2.image.Rotate(theta * deg_to_rad);
+        }
+        else
+        {
+          y_dist2 = Math.Cos(120 * deg_to_rad) * arrow_scale;
+          x_dist2 = Math.Sin(120 * deg_to_rad) * arrow_scale;
+          rotate2 = arrow2.image.Rotate(120 * deg_to_rad);
+        }
+
+        if (theta < 240)
+        {
+          y_dist3 = Math.Cos(theta * deg_to_rad) * arrow_scale;
+          x_dist3 = Math.Sin(theta * deg_to_rad) * arrow_scale;
+          rotate3 = arrow3.image.Rotate(theta * deg_to_rad);
+        }
+        else
+        {
+          y_dist3 = Math.Cos(240 * deg_to_rad) * arrow_scale;
+          x_dist3 = Math.Sin(240 * deg_to_rad) * arrow_scale;
+          rotate3 = arrow3.image.Rotate(240 * deg_to_rad);
+        }
+
+        arrow1.sprite.SetX(winX - arrow1.hx + x_dist1);
+        arrow1.sprite.SetY(WinY - arrow1.hy - y_dist1);
+
+        arrow2.sprite.SetImage(rotate2);
+        arrow2.sprite.SetX(winX - arrow2.hx + x_dist2);
+        arrow2.sprite.SetY(WinY - arrow2.hy - y_dist2);
+
+        arrow3.sprite.SetImage(rotate3);
+        arrow3.sprite.SetX(winX - arrow3.hx + x_dist3);
+        arrow3.sprite.SetY(WinY - arrow3.hy - y_dist3);
+      }
+    else
+      {
+        outer_ring.sprite.SetX(0);
+        outer_ring.sprite.SetY(0);
+
+        outer_ring.sprite.SetX(0);
+        outer_ring.sprite.SetY(0);
+      }
+  }

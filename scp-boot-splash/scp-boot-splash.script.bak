@@ -1,0 +1,244 @@
+/* === Constants === */
+inner_str = "inner_ring.png"
+outer_str = "outer_ring.png"
+arrow_str = "arrow.png"
+box_str = "box.png"
+bullet_str = "bullet.png"
+lock_str = "lock.png"
+entry_str = "entry.png"
+progress_box_str = "progress_box.png"
+progress_bar_str = "progress_bar.png"
+status = "normal";
+
+deg_to_rad = Math.Pi / 180
+theta = 0;
+rate = 1;
+
+DIALOG_Z = 10000;
+ARROW_COUNT = 3;
+ARROW_SPACING = 120;
+
+
+/* === Window Setup === */
+Window.SetBackgroundTopColor(0,0,0);
+Window.SetBackgroundBottomColor(0, 0, 0);
+
+scale_to = Window.GetWidth() / 7;
+arr_scale = scale_to / 3;
+scale_from = Image(inner_str).GetWidth();
+scale = scale_to / scale_from;
+winX = Window.GetX() + Window.GetWidth() / 2;
+winY = Window.GetY() + Window.GetHeight() / 2;
+
+
+/* === Helper === */
+
+fun LoadImage(filename)
+  /*
+  Loads and scales an image,
+  returning the image, dimensions(x, y), and sprite
+  */
+  {
+    local.res;
+    res.image = Image(filename);
+    height = res.image.GetHeight();
+    width = res.image.GetWidth();
+
+    res.image = res.image.Scale(width * scale, height * scale);
+    res.x = res.image.GetWidth();
+    res.y = res.image.GetHeight();
+    res.hx = res.x / 2;
+    res.hy = res.y / 2;
+    res.sprite = Sprite(res.image);
+    return res;
+  }
+
+
+/* === Content Loading === */
+
+inner_info = LoadImage(inner_str);
+outer_info = LoadImage(outer_str);
+arrow1 = LoadImage(arrow_str);
+arrow2 = LoadImage(arrow_str);
+arrow3 = LoadImage(arrow_str);
+
+
+/* === Arrow Updater === */
+
+fun do_trig(theta, index)
+  {
+    rads = (theta + index * ARROW_SPACING) * deg_to_rad;
+    local.res;
+    res.y_dist = Math.Cos(rads) * arr_scale;
+    res.x_dist = Math.Sin(rads) * arr_scale;
+    return res;
+  }
+
+fun update_arrow(arrow, theta, index)
+  {
+    local.res = do_trig(theta, index);
+    local.rotated = arrow.image.Rotate(rads);
+    arrow.sprite.SetImage(rotated);
+    arrow.sprite.SetX(winX - rotated.GetWidth() / 2 + res.x_dist);
+    arrow.sprite.SetY(winY - rotated.GetHeight() / 2 - res.y_dist);
+  }
+
+
+/* === Callbacks === */
+
+fun refresh_callback()
+  {
+    if(status == "normal")
+      {
+        theta += rate;
+
+        update_arrow(arrow1, theta, 0);
+        update_arrow(arrow2, theta, 1);
+        update_arrow(arrow3, theta, 2);
+      }
+
+    else
+      {
+        outer_info.sprite.SetOpacity(0);
+      }
+  }
+
+
+fun dialog_setup()
+  {
+    local.box;
+    local.lock;
+    local.entry;
+    local.bullet;
+
+    box = LoadImage(box_str);
+    lock = LoadImage(lock_str);
+    entry = LoadImage(entry_str);
+
+    box.x = winX - box.hx;
+    box.y = winY - box.hy;
+    box.z = DIALOG_Z;
+    box.sprite.SetPosition(box.x, box.y, box.z);
+
+    lock.x = box.x + box.hx - (lock.hx + entry.hx) / 2;
+    lock.y = box.y + box.hy - lock.hy;
+    lock.z = box.z + 1;
+    lock.sprite.SetPosition(lock.x, lock.y, lock.z);
+
+    entry.x = lock.x + lock.hx;
+    entry.y = box.y + box.hy - entry.hy;
+    entry.z = box.z + 1;
+    entry.sprite.SetPosition(entry.x, entry.y, entry.z);
+
+    global.dialog.box = box;
+    global.dialog.lock = lock;
+    global.dialog.entry = entry;
+    global.dialog.bullet_image = LoadImage(bullet_str).image
+    dialog_opacity(1);
+  }
+
+fun dialog_opacity(opacity)
+  {
+    dialog.box.sprite.SetOpacity(opacity);
+    dialog.lock.sprite.SetOpacity(opacity);
+    dialog.entry.sprite.SetOpacity(opacity);
+    for(index = 0; dialog.bullet[index]; index++)
+      {
+        dialog.bullet[index].sprite.SetOpacity(opacity);
+      }
+  }
+
+fun display_normal_callback()
+  {
+    global.status = "normal";
+    if(global.dialog)
+      dialog_opacity(0);
+  }
+
+fun display_password_callback(prompt, bullets)
+  {
+    global.status = "password";
+    if(!global.dialog)
+	  dialog_setup();
+    else
+	  dialog_opacity(1);
+
+    for(index = 0; index < bullets; index++)
+      {
+        if(!dialog.bullet[index])
+          {
+            dialog.bullet[index].sprite = Sprite(dialog.bullet_image);
+            dialog.bullet[index].x = dialog.entry.x + index * dialog.bullet_image.GetWidth();
+            dialog.bullet[index].y = dialog.entry.y + dialog.entry.image.GetHeight() / 2 - dialog.bullet_image.GetHeight() / 2;
+            dialog.bullet[index].z = dialog.entry.z + 1;
+            dialog.bullet[index].sprite.SetPosition(dialog.bullet[index].x, dialog.bullet[index].y, dialog.bullet[index].z);
+          }
+        dialog.bullet[index].sprite.SetOpacity(1);
+      }
+
+    for(index = bullets; dialog.bullet[index]; index++)
+      {
+        dialog.bullet[index].sprite.SetOpacity(0);
+      }
+  }
+
+
+
+progress_box = LoadImage(progress_box_str);
+progress_y = Window.GetY() + Window.GetHeight() * 0.75 - progress_box.half_dims[1];
+progress_box.sprite.SetPosition(
+  winX - progress_box.half_dims[0],
+  progress_y,
+  0
+);
+
+progress_bar.original_image = Image(progress_bar_str);
+progress_bar.image = Image(progress_bar_str).Scale(1, progress_bar.original_image.GetHeight());
+progress_bar.sprite = Sprite();
+progress_bar.x = winX - progress_bar.original_image.GetWidth() / 2;
+progress_bar.y = progress_y + (progress_box.dims[1] - progress_bar.original_image.GetHeight()) / 2;
+progress_bar.sprite.SetPosition(progress_bar.x, progress_bar.y, 1);
+
+fun progress_callback(duration, progress)
+  {
+    if(progress_bar.image.GetWidth() != Math.Int(progress_bar.original_image.GetWidth() * progress))
+      {
+        progress_bar.image = progress_bar.original_image.Scale(progress_bar.original_image.GetWidth() * progress, progress_bar.original_image.GetHeight());
+        progress_bar.sprite.SetImage(progress_bar.image);
+      }
+  }
+
+
+
+fun quit_callback()
+  {
+    outer_info.sprite.SetOpacity(1);
+  }
+
+
+message_sprite = Sprite();
+message_sprite.SetPosition(10, 10, DIALOG_Z);
+
+fun display_message_callback(text)
+  {
+    my_image = Image.Text(text, 1, 1, 1);
+    message_sprite.SetImage(my_image);
+  }
+
+fun hide_message_callback(text)
+  {
+    message_sprite = Sprite();
+    message_sprite.SetPosition(10, 10, DIALOG_Z);
+  }
+
+
+
+/* === Plymouth Registration === */
+
+Plymouth.SetRefreshFunction(refresh_callback);
+Plymouth.SetDisplayNormalFunction(display_normal_callback);
+Plymouth.SetDisplayPasswordFunction(display_password_callback);
+Plymouth.SetBootProgressFunction(progress_callback);
+Plymouth.SetQuitFunction(quit_callback);
+Plymouth.SetDisplayMessageFunction(display_message_callback);
+Plymouth.SetHideMessageFunction(hide_message_callback);
