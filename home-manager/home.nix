@@ -164,6 +164,7 @@
       };
     };
   };
+
   # Bash aliases & functions
   programs.bash = {
     enable = true;

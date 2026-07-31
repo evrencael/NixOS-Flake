@@ -4,26 +4,26 @@
   ...
 }:
 {
-  # ============================================
+  # ========================================
   # KERNEL MODULES & AUDIO FIXES
-  # ============================================
+  # ========================================
   boot.kernelModules = [ "snd-hda-intel" ];
 
   boot.extraModprobeConfig = ''
     options snd-hda-intel model=auto probe_mask=1
   '';
 
-  # ============================================
+  # ========================================
   # AUDIO FIXES (TODO: Actually fix 😭)
-  # ============================================
+  # ========================================
   security.rtkit.enable = true;
   hardware.enableAllFirmware = true;
   # IF YOU ENABLE `services.pipewire.wireplumber`,
   # SAY GOODBYE TO WIFI :)
 
-  # ============================================
+  # ========================================
   # POWER MANAGEMENT
-  # ============================================
+  # ========================================
 
   # TLP - Advanced power management daemon
   services.tlp = {
@@ -57,9 +57,9 @@
   # PowerTOP auto-tuning for power savings ++
   powerManagement.powertop.enable = true;
 
-  # ============================================
+  # ========================================
   # ADDITIONAL SYSTEM PACKAGES
-  # ============================================
+  # ========================================
   environment.systemPackages = with pkgs; [
     powertop
     acpi
