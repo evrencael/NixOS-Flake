@@ -25,19 +25,23 @@
         "workspace 2, class:firefox"
         "workspace 3, class:spotify"
         "workspace 5, class:vesktop"
+        "noanim, class:^(firefox)$, title:^(.*)$"
+        "float, class:^(firefox)$, title:^(.*)$"
       ];
 
       exec-once = [
         "mako"
         "waybar"
         "hyprctl dispatch exec spotify"
-        "hyprctl dispatch exec firefox"
+        "hyprctl dispatch exec firefox-safe"
         "hyprctl dispatch exec code"
       ];
 
       env = [
         "LIBVA_DRIVER_NAME,nvidia"
         "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+        "ELECTRON_OZONE_PLATFORM_HINT,auto"
+
         "XCURSOR_THEME,Bibata-Modern-Classic"
         "XCURSOR_SIZE,24"
       ];

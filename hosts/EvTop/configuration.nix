@@ -15,7 +15,7 @@
     powerManagement.enable = false;
     powerManagement.finegrained = false;
 
-    open = true; # use open-source NVIDIA kernel modules
+    open = false; # use open-source NVIDIA kernel modules
     nvidiaSettings = true; # install nvidia-settings GUI tool
 
     # use stable drivers
@@ -23,5 +23,14 @@
   };
 
   boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_drm" ];
-  boot.kernelParams = [ "nvidia-drm.modeset=1" ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.nvidiaPackages.stable ];
+  boot.kernelParams = [
+    "nvidia-drm.modeset=1"
+    "video=efifb:off"                                    # disables EFI framebuffer
+    "initcall_blacklist=simpledrm_platform_driver_init"  # belt-and-suspenders
+  ];
+  boot.plymouth.extraConfig = ''
+    DeviceScale=1
+  '';
+
 }

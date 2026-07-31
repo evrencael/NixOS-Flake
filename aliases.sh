@@ -42,6 +42,7 @@ alias la="ls -A --color=auto"
 alias ll="ls -la --color=auto"
 alias rs="echo 'Restarting . . .'; sudo shutdown -r now"
 alias sd="echo 'Shutting down . . .'; sudo shutdown -h now"
+alias firefox="firefox-safe"
 
 alias ..="cd .."
 alias ...="cd ../.."

@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, config, ... }:
 {
   imports = [
     ./modules
@@ -14,7 +14,7 @@
     btop
     tofi
 
-    firefox
+    firefox-unwrapped
     cloudflare-warp
     prismlauncher
 
@@ -93,6 +93,12 @@
         hyprctl dispatch focuswindow class:spotify || spotify
       fi
     '')
+
+    # launch the working Firefox binary directly
+    (writeShellScriptBin "firefox-safe" ''
+      exec ${pkgs.firefox-unwrapped}/bin/firefox "$@"
+    '')
+
   ];
 
   # vesktop config
@@ -125,6 +131,24 @@
     '';
   };
 
+  # Get tofi to recognise firefox
+  xdg.desktopEntries.firefox = {
+    name = "Firefox";
+    comment = "Web Browser";
+    exec = "${pkgs.firefox-unwrapped}/bin/firefox %U";
+    icon = "firefox";
+    terminal = false;
+    categories = [ "Network" "WebBrowser" ];
+    mimeType = [
+      "text/html"
+      "text/xml"
+      "application/xhtml+xml"
+      "x-scheme-handler/http"
+      "x-scheme-handler/https"
+      "x-scheme-handler/ftp"
+    ];
+  };
+
   # config for catppuccin
   catppuccin = {
     flavor = "mocha";
@@ -134,7 +158,6 @@
     waybar.enable = false; # enable once to download theme
     #vesktop.enable = true;
     btop.enable = true;
-    firefox.enable = true;
     hyprland.enable = true;
     hyprlock.enable = true;
     mako.enable = true;
