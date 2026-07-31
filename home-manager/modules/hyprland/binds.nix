@@ -17,28 +17,31 @@ let
     "$mainMod, F, fullscreen"
 
     # switch workspaces
-    "$mainMod, 1, exec, hyprctl dispatch workspace 1"
-    "$mainMod, 2, exec, hyprctl dispatch workspace 2"
-    "$mainMod, 3, exec, hyprctl dispatch workspace 3"
-    "$mainMod, 4, exec, hyprctl dispatch workspace 4"
-    "$mainMod, 5, exec, hyprctl dispatch workspace 5"
-    "$mainMod, 6, exec, hyprctl dispatch workspace 6"
-    "$mainMod, 7, exec, hyprctl dispatch workspace 7"
-    "$mainMod, 8, exec, hyprctl dispatch workspace 8"
-    "$mainMod, 9, exec, hyprctl dispatch workspace 9"
-    "$mainMod, 0, exec, hyprctl dispatch workspace 10"
+    "$mainMod, 1, workspace, 1" # LG
+    "$mainMod, 2, workspace, 2"
+    "$mainMod, 3, workspace, 3"
+    "$mainMod, 4, workspace, 4"
+    "$mainMod, 5, workspace, 5"
+
+    "$mainMod+CTRL, 1, workspace, 11" # Titan
+    "$mainMod+CTRL, 2, workspace, 12"
+    "$mainMod+CTRL, 3, workspace, 13"
+    "$mainMod+CTRL, 4, workspace, 14"
+    "$mainMod+CTRL, 5, workspace, 15"
+
 
     # move windows between workspaces
-    "$mainMod+SHIFT, 1, movetoworkspace, 1"
+    "$mainMod+SHIFT, 1, movetoworkspace, 1" # LG
     "$mainMod+SHIFT, 2, movetoworkspace, 2"
     "$mainMod+SHIFT, 3, movetoworkspace, 3"
     "$mainMod+SHIFT, 4, movetoworkspace, 4"
     "$mainMod+SHIFT, 5, movetoworkspace, 5"
-    "$mainMod+SHIFT, 6, movetoworkspace, 6"
-    "$mainMod+SHIFT, 7, movetoworkspace, 7"
-    "$mainMod+SHIFT, 8, movetoworkspace, 8"
-    "$mainMod+SHIFT, 9, movetoworkspace, 9"
-    "$mainMod+SHIFT, 0, movetoworkspace, 10"
+
+    "$mainMod+SHIFT+CTRL, 1, movetoworkspace, 11" # Titan
+    "$mainMod+SHIFT+CTRL, 2, movetoworkspace, 12"
+    "$mainMod+SHIFT+CTRL, 3, movetoworkspace, 13"
+    "$mainMod+SHIFT+CTRL, 4, movetoworkspace, 14"
+    "$mainMod+SHIFT+CTRL, 5, movetoworkspace, 15"
   ];
 
   commonBindl = [ ];

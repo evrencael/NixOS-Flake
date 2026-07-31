@@ -12,13 +12,35 @@
     settings = {
       monitor =
         if hostname == "EvBook" then
-          ",preferred,auto,1.26" # zoom in on retina display
+          [ ",preferred,auto,1.26" ] # zoom in on retina display
         else
-          ",preferred,auto,1.0";
+          [
+            # Main monitor
+            "DP-3,3440x1440@240.00Hz,0x0,1"
+
+            # Secondary monitor (right & vertical)
+            "DP-2,1920x1080@165.00Hz,3440x-215,1,transform,3"
+          ];
 
       "$mainMod" = "SUPER";
       "$terminal" = "alacritty";
       "$menu" = "tofi-drun | xargs hyprctl dispatch exec --";
+
+      workspace = [
+        # LG (DP-3)
+        "1, monitor:DP-3, default:true"
+        "2, monitor:DP-3"
+        "3, monitor:DP-3"
+        "4, monitor:DP-3"
+        "5, monitor:DP-3"
+
+        # Titan Army (DP-2)
+        "11, monitor:DP-2, default:true"
+        "12, monitor:DP-2"
+        "13, monitor:DP-2"
+        "14, monitor:DP-2"
+        "15, monitor:DP-2"
+      ];
 
       windowrulev2 = [
         "workspace 1, class:code"
