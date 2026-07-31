@@ -6,42 +6,31 @@
   ...
 }:
 let
-  scpPlymouthTheme = pkgs.stdenv.mkDerivation {
-    name = "plymouth-theme-scp";
-    src = pkgs.fetchFromGitHub {
-      owner = "TechCiel";
-      repo = "plymouth-theme-scp";
-      rev = "master";
-      sha256 = "sha256-o8YC6kn481ErrdBBUo+0c2BL7ekyRASpVEuEEn3c//k="; # replace after first failed build
-    };
-    installPhase = ''
-      mkdir -p $out/share/plymouth/themes/scp
-      cp -r * $out/share/plymouth/themes/scp/
-    '';
-  };
-
   scpBootSplash = pkgs.stdenv.mkDerivation {
     name = "scp-boot-splash";
-    src = pkgs.fetchFromGitHub {
-      owner = "s-ankur";
-      repo = "scp-boot-splash";
-      rev = "master";
-      sha256 = "sha256-KWmCPzFGeRStf1dFlHrktIQQtiePl9iwHHPmYo9SjJs="; # replace `pkgs.lib.fakeSha256` after first failed build
+    src = builtins.path {
+      path = ../../scp-boot-splash;
+      name = "scp-boot-splash";
     };
     installPhase = ''
-      mkdir -p $out/share/plymouth/themes/scp-boot-splash
-      cp -r * $out/share/plymouth/themes/scp-boot-splash/
+      mkdir -p "$out/share/plymouth/themes/scp-boot-splash"
+      shopt -s dotglob nullglob
+      cp -r -- * "$out/share/plymouth/themes/scp-boot-splash/"
+
+      substituteInPlace "$out/share/plymouth/themes/scp-boot-splash/scp-boot-splash.plymouth" \
+        --replace "/usr/share/plymouth/themes/scp-boot-splash" \
+                  "$out/share/plymouth/themes/scp-boot-splash"
     '';
   };
 
   greetdScript = pkgs.writeShellScript "tuigreet-launch" ''
-    exec ${pkgs.greetd.tuigreet}/bin/tuigreet \
+    exec ${pkgs.tuigreet}/bin/tuigreet \
       --time \
       --asterisks \
       --greeting "$(cat /etc/greetd/greeting.txt)" \
       --theme "border=#00ff41;text=#00ff41;prompt=#00ff41;time=#00cc33;action=#00ff41;button=#003300;container=#0a0a0a;input=#00ff41" \
       --width 120 \
-      --cmd Hyprland
+      --cmd start-hyprland
   '';
 in
 {
@@ -178,10 +167,6 @@ Secure | Contain | Protect
     };
   };
 
-  # Let plymouth play
-  systemd.services.greetd.serviceConfig = {
-    ExecStartPre = "${pkgs.coreutils}/bin/sleep 3";
-  };
 
 
   # ============================================
@@ -246,6 +231,16 @@ Secure | Contain | Protect
     NIXOS_OZONE_WL = "1";
     WLR_NO_HARDWARE_CURSORS = "1";
     SDL_VIDEODRIVER = "x11";
+    GBM_BACKEND = "nvidia-drm";
+
+
+    # firefox is special :|
+    MOZ_ENABLE_WAYLAND = "1";
+  };
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
   };
 
 
