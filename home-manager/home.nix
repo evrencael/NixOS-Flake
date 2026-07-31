@@ -99,6 +99,47 @@
       exec ${pkgs.firefox-unwrapped}/bin/firefox "$@"
     '')
 
+    # debounce headset volume keys that can emit duplicate presses
+    (writeShellScriptBin "headset-volume-step" ''
+      set -eu
+
+      action=''${1:-}
+      lock_file="/tmp/headset-volume-step.lock"
+      state_file="/tmp/headset-volume-step.last"
+      debounce_ms=150
+
+      case "$action" in
+        up|down) ;;
+        *)
+          exit 2
+          ;;
+      esac
+
+      exec 9>"$lock_file"
+      flock -n 9 || exit 0
+
+      now_ms=$(date +%s%3N)
+      last_ms=0
+
+      if [ -f "$state_file" ]; then
+        last_ms=$(cat "$state_file" 2>/dev/null || printf '0')
+      fi
+
+      if [ $((now_ms - last_ms)) -lt "$debounce_ms" ]; then
+        exit 0
+      fi
+
+      printf '%s\n' "$now_ms" > "$state_file"
+
+      case "$action" in
+        up)
+          wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+          ;;
+        down)
+          wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+          ;;
+      esac
+    '')
   ];
 
   # vesktop config

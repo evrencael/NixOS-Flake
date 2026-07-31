@@ -64,9 +64,9 @@ let
   # Device-specific lock binds
   deviceBindl = {
     EvTop = [
-      ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5%+" # increases by 5% for some reason
-      ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5%-"
-      ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+      ", XF86AudioRaiseVolume, exec, headset-volume-step up"
+      ", XF86AudioLowerVolume, exec, headset-volume-step down"
+      #", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
 
       "SHIFT, F2, exec, playerctl -p spotify volume 0.05-"
       "SHIFT, F3, exec, playerctl -p spotify volume 0.05+"
